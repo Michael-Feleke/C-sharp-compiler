@@ -45,4 +45,6 @@ comment_block   "\/\*"(.*?)\*\/
 
 %%
 
-[ \t\n]+  
+[ \t\n]+   /* Ignore whitespace */
+{comment_line}    /* Ignore single-line comments */
+{comment_block}   /* Ignore multi-line comments */
