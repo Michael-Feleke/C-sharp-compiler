@@ -40,3 +40,4 @@ string      \"([^\"\\]|\\.)*\"
 number      [0-9]+
 punctuation [()\[\]{};:,.?\/!%@#"']
 operator [+\-*/%=<>!&|^?:,]
+comment_line    \/\/[^\n]*\n
