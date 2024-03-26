@@ -48,3 +48,23 @@ comment_block   "\/\*"(.*?)\*\/
 [ \t\n]+   /* Ignore whitespace */
 {comment_line}    /* Ignore single-line comments */
 {comment_block}   /* Ignore multi-line comments */
+
+{identifier} {
+    // Check if the identifier is a keyword
+    if (isKeyword(yytext)) {
+        printToken("KEYWORD", yytext);
+    } else {
+        printToken("IDENTIFIER", yytext);
+    }
+}
+
+{string}   { printToken("STRING", yytext); }
+{number}   { printToken("NUMBER", yytext); }
+{punctuation} { printToken("PUNCTUATION", yytext); }
+{operator} { printToken("OPERATOR", yytext); }
+"==" { printToken("OPERATOR", yytext); }
+"=>" { printToken("PUNCTUATION", yytext); }
+"->" { printToken("PUNCTUATION", yytext); }
+.          { printToken("UNKNOWN", yytext); }
+
+%%
