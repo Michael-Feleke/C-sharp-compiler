@@ -38,3 +38,4 @@ int isKeyword(const char* word) {
 identifier  [a-zA-Z_][a-zA-Z0-9_]*
 string      \"([^\"\\]|\\.)*\"
 number      [0-9]+
+punctuation [()\[\]{};:,.?\/!%@#"']
