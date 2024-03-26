@@ -22,3 +22,17 @@ const char* keywords[] = {
     "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe",
     "ushort", "using", "using static", "virtual", "void", "volatile", "while"
 };
+
+// Function to check if a given string is a keyword
+int isKeyword(const char* word) {
+    int numKeywords = sizeof(keywords) / sizeof(keywords[0]);
+    for (int i = 0; i < numKeywords; ++i) {
+        if (strcmp(word, keywords[i]) == 0) {
+            return 1; // Keyword found
+        }
+    }
+    return 0; // Not a keyword
+}
+%}
+
+
