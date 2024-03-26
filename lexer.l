@@ -42,3 +42,7 @@ punctuation [()\[\]{};:,.?\/!%@#"']
 operator [+\-*/%=<>!&|^?:,]
 comment_line    \/\/[^\n]*\n
 comment_block   "\/\*"(.*?)\*\/
+
+%%
+
+[ \t\n]+  
