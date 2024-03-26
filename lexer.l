@@ -41,3 +41,4 @@ number      [0-9]+
 punctuation [()\[\]{};:,.?\/!%@#"']
 operator [+\-*/%=<>!&|^?:,]
 comment_line    \/\/[^\n]*\n
+comment_block   "\/\*"(.*?)\*\/
