@@ -75,5 +75,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    FILE* file = fopen(argv[1], "r");
+    if (!file) {
+        fprintf(stderr, "Failed to open input file.\n");
+        return 1;
+    }
+
 
 }
