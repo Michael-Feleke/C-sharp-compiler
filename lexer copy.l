@@ -1,19 +1,17 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "parser.tab.h" // Include the generated header file from Bison
-extern YYSTYPE yylval;
 %}
 
 %option noyywrap
 
 %{
 // Function to print tokens
-void printToken(int tokenType, const char* lexeme) {
-    printf("%d(\"%s\");\n", tokenType, lexeme);
+void printToken(const char* tokenType, const char* lexeme) {
+    printf("%s(\"%s\");\n", tokenType, lexeme);
 }
 
+// Array for keywords
 const char* keywords[] = {
     "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
     "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
@@ -37,33 +35,58 @@ int isKeyword(const char* word) {
 }
 %}
 
+identifier  [a-zA-Z_][a-zA-Z0-9_]*
+string      \"([^\"\\]|\\.)*\"
+number      [0-9]+
+punctuation [()\[\]{};:,.?\/!%@#"']
+operator [+\-*/%=<>!&|^?:,]
+comment_line    \/\/[^\n]*\n
+comment_block   "\/\*"(.*?)\*\/
+
 %%
 
-[ \t\n]+           /* Ignore whitespace */
-\/\/[^\n]*         { /* Ignore single-line comments */ }
-\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/  { /* Ignore multi-line comments */ }
+[ \t\n]+   /* Ignore whitespace */
+{comment_line}    /* Ignore single-line comments */
+{comment_block}   /* Ignore multi-line comments */
 
-[a-zA-Z_][a-zA-Z0-9_]* {
+{identifier} {
     // Check if the identifier is a keyword
     if (isKeyword(yytext)) {
-        yylval.str = strdup(yytext);
-        return KEYWORD;
+        printToken("KEYWORD", yytext);
     } else {
-        yylval.str = strdup(yytext);
-        return IDENTIFIER;
+        printToken("IDENTIFIER", yytext);
     }
 }
 
-\"([^\"\\]|\\.)*\"     { yylval.str = strdup(yytext); return STRING; }
-[0-9]+                 { yylval.str = strdup(yytext); return NUMBER; }
-[()\[\]{};:,.?\/!%@#"'] { yylval.str = strdup(yytext); return PUNCTUATION; }
-[+\-*/%=<>!&|^?:,]|"=="|"->"|"=>" { yylval.str = strdup(yytext); return OPERATOR; }
-.                       { yylval.str = strdup(yytext); return UNKNOWN; } // Handle unrecognized tokens
+{string}   { printToken("STRING", yytext); }
+{number}   { printToken("NUMBER", yytext); }
+{punctuation} { printToken("PUNCTUATION", yytext); }
+{operator} { printToken("OPERATOR", yytext); }
+"==" { printToken("OPERATOR", yytext); }
+"=>" { printToken("PUNCTUATION", yytext); }
+"->" { printToken("PUNCTUATION", yytext); }
+.          { printToken("UNKNOWN", yytext); }
 
 %%
 
-#undef yywrap
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
-int yywrap() {
-    return 1; // Indicate end of input
+    FILE* file = fopen(argv[1], "r");
+    if (!file) {
+        fprintf(stderr, "Failed to open input file.\n");
+        return 1;
+    }
+
+    yyin = file;
+
+    yylex();
+
+    fclose(file);
+    return 0;
 }
+
+

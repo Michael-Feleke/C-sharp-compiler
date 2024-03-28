@@ -1,68 +1,76 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-extern int yylex();
+#include <string.h>
+#include "parser.tab.h"
+extern FILE *yyin; 
+extern YYSTYPE yylval;
 void yyerror(const char *s);
 %}
 
-%token KEYWORD IDENTIFIER STRING NUMBER PUNCTUATION OPERATOR UNKNOWN
+%union {
+    char *str;
+}
+
+%token <str> KEYWORD IDENTIFIER STRING NUMBER
+%token <str> PUNCTUATION OPERATOR UNKNOWN
+
+%start program
 
 %%
 
-program : statement_list
+program : statement_list { printf("Parsing completed successfully.\n"); }
         ;
 
 statement_list : statement
                | statement_list statement
                ;
 
-statement : variable_declaration
-          | expression_statement
-          | compound_statement
-          | if_statement
-          | while_statement
-          | return_statement
-          | ';'
+statement : expression_statement { printf("Expression statement.\n"); }
+          | declaration_statement { printf("Declaration statement.\n"); }
           ;
 
-variable_declaration : KEYWORD IDENTIFIER ';'
-                     ;
+expression_statement : expression ';' { printf("Expression statement.\n"); }
 
-expression_statement : expression ';'
-                     ;
-
-compound_statement : '{' statement_list '}'
-                   ;
-
-if_statement : KEYWORD '(' expression ')' statement
-             | KEYWORD '(' expression ')' statement KEYWORD statement
-             ;
-
-while_statement : KEYWORD '(' expression ')' statement
-                ;
-
-return_statement : KEYWORD expression ';'
-                 ;
-
-expression : IDENTIFIER '=' expression
-           | simple_expression
+declaration_statement : type IDENTIFIER ';' { printf("Declaration statement for %s.\n", $2); if ($2) free($2); }
+type : KEYWORD { printf("Type: %s\n", $1); if ($1) free($1); }
+expression : primary_expression
+           | expression '+' primary_expression { printf("Addition operation.\n"); }
+           | expression '-' primary_expression { printf("Subtraction operation.\n"); }
+           | expression '*' primary_expression { printf("Multiplication operation.\n"); }
+           | expression '/' primary_expression { printf("Division operation.\n"); }
+           | '(' expression ')' { printf("Parenthesized expression.\n"); }
            ;
-
-simple_expression : term
-                  | simple_expression OPERATOR term
-                  ;
-
-term : IDENTIFIER
-     | NUMBER
-     ;
+primary_expression : IDENTIFIER { printf("Identifier: %s\n", $1); if ($1) free($1); }
+                   | STRING { printf("String literal: %s\n", $1); if ($1) free($1); }
+                   | NUMBER { printf("Numeric literal: %s\n", $1); if ($1) free($1); }
+                      ;
 
 %%
 
 void yyerror(const char *s) {
     fprintf(stderr, "Parser error: %s\n", s);
+    exit(EXIT_FAILURE);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    FILE *file;
+
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <input_file>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    file = fopen(argv[1], "r");
+    if (!file) {
+        fprintf(stderr, "Failed to open input file.\n");
+        return EXIT_FAILURE;
+    }
+
+    yyin = file;
+
     yyparse();
-    return 0;
+
+    fclose(file);
+    return EXIT_SUCCESS;
 }
