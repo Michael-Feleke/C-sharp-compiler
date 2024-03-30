@@ -34,7 +34,7 @@ typedef struct {
 %token <strval> NUMBER
 
 %token USING CLASS STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT
-%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA
+%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION COLON IF ELSE WHILE RETURN SWITCH VOID CONSOLE WRITE_LINE READ_LINE
 
 %left OR
 %left AND
@@ -52,11 +52,23 @@ program : statement_list { printf("Parsing completed successfully.\n"); }
 
 statement_list : statement
                | statement_list statement
+               | 
                ;
 
 statement : expression_statement 
           | declaration_statement 
           | directive_statement 
+          | conditional_statement
+
+conditional_statement : if_statements
+
+if_statements : IF LPAREN expression RPAREN statement_list { printf("If statement.\n"); }
+              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE { printf("If-block statement.\n"); }
+              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE statement { printf("If-else-block statement.\n"); }
+              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE   LBRACE statement RBRACE { printf("If-else-block statement.\n"); }
+              | IF LPAREN expression RPAREN statement_list ELSE statement { printf("If-else statement.\n"); }
+              | IF LPAREN expression RPAREN statement_list ELSE LBRACE statement_list RBRACE { printf("If-else statement.\n"); }
+
 
 expression_statement : expression SEMICOLON { printf("Expression statement.\n"); }
 
@@ -120,7 +132,6 @@ class_declarations : CLASS ID LBRACE class_body RBRACE
            ;
 
 class_body:statement_list 
-           |
           ;
 
 function_declarations : STATIC type ID LPAREN RPAREN LBRACE func_body RBRACE
@@ -140,7 +151,6 @@ function_declarations : STATIC type ID LPAREN RPAREN LBRACE func_body RBRACE
 
 
 func_body: statement_list
-           |
            ;
 
 expression : primary_expression
@@ -166,9 +176,19 @@ expression : primary_expression
            | MINUS expression
            | PLUS PLUS expression
            | expression DOT expression LPAREN expression RPAREN
+           | CONSOLE DOT WRITE_LINE LPAREN expression RPAREN
+           | CONSOLE DOT READ_LINE LPAREN expression RPAREN
+           | 
            ;
 
-primary_expression : ID { printf("Primary expression (identifier): %s\n", $1); }
+primary_expression : ID { printf("Primary expression (identifier): %s\n", $1); 
+                        char *identifier = $1;
+                        int token = search_symbol_table(identifier);
+                        if (token == -1) {
+                            printf("Error: Identifier '%s' does not exist in the symbol table.\n", identifier);
+                            yyerror("Identifier not declared");
+                            }
+ }
                    | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); }
                    | NUMBER { printf("Primary expression (number): %s\n", $1); }
 

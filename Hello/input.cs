@@ -1,6 +1,6 @@
 using System;
 
-class Program
+class Program 
 {
     static void Main()
     {
@@ -23,5 +23,19 @@ class Program
         Console.WriteLine($"Product: {product}");
         Console.WriteLine($"Quotient: {quotient}");
         Console.WriteLine($"Remainder: {remainder}");
+        int x=2;
+
+        if(x>0)
+        
+            Console.WriteLine("x is positive");
+        
+        else{
+            Console.ReadLine();
+            int y=9;
+            int d=235;
+
+        }
+
+
     }
 }
