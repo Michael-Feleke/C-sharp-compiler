@@ -63,6 +63,9 @@ statement : expression_statement
 
 conditional_statement : if_statements
                       | switch_statement 
+                      | ternary_statement
+
+ternary_statement : expression QUESTION expression COLON expression { printf("Ternary statement.\n"); }
 
 switch_statement : SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list BREAK SEMICOLON RBRACE 
 |SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list RBRACE 
