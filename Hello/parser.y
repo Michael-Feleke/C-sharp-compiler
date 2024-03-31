@@ -267,9 +267,9 @@ array_list: expression
 | array_list COMMA expression 
 
 console_list:expression
-
 | console_list COMMA expression { printf("Console list.\n"); }
 |expression PLUS statement_list { printf("console list.\n"); }
+|;
 
 bool_values:TRUE_VALUE | FALSE_VALUE;
 

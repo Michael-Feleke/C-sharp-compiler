@@ -2,19 +2,16 @@ using System;
 
 class Program
 {
-    private void Main(string[] args)
+    static void Main(string[] args)
     {
-        bool[] numbers = { 1, 2 };
-        console.WriteLine(numbers[0], numbers[1], numbers[2]);
+        // Declare and initialize the two numbers
+        int num1 = 10;
+        int num2 = 20;
 
-        while(true)
-        {
-            Console.WriteLine("Hello World");
-        }
-        
-        Console.WriteLine("Hello World");
-        int x=5;
-      
+        // Add the two numbers
+        int sum = num1 + num2;
 
-    }  
+        // Print the sum
+        Console.WriteLine($"The sum of {num1} and {num2} is: {sum}");
+    }
 }
