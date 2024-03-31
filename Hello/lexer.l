@@ -24,7 +24,7 @@ char* token_strings[] = {
     "CLASS", "STATIC", "SEMICOLON", "NUMBER",
     "ASSIGN", "MINUS", "PLUS", "MULTIPLY", "DIVIDE", "MODULO", "DOT", "LBRACKET", "RBRACKET",
     "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "LESS_EQUAL", "GREATER_THAN", "GREATER_EQUAL",
-    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE","PUBLIC","PRIVATE","PROTECTED"
+    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE","PUBLIC","PRIVATE","PROTECTED" ,"TRUE_VALUE","FALSE_VALUE"
 };
 
 int search_symbol_table(char *name) {
@@ -114,6 +114,8 @@ char* search_symbol_tableByname(char *name) {
 "!"                 { return NOT; }
 "?"                 { return QUESTION_MARK; }
 ":"                 { return COLON; }
+"true"              { return TRUE_VALUE; }
+"false"             { return FALSE_VALUE; }
 
 
 [0-9]+              { yylval.strval = strdup(yytext); return NUMBER; }
@@ -127,6 +129,7 @@ char* search_symbol_tableByname(char *name) {
                           }
                         }
 (\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext); return STRING_LITERAL; }
+
 
 \/\/[^\n]*           { /* Ignore single-line comments */ }
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/  { /* Ignore multi-line comments */ }

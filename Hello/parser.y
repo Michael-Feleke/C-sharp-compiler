@@ -235,6 +235,7 @@ func_body : statement_list
 array_list: expression 
 | array_list COMMA expression 
 console_list:expression
+
 | console_list COMMA expression { printf("Console list.\n"); }
 |expression PLUS statement_list { printf("console list.\n"); }
 
@@ -258,6 +259,7 @@ expression : primary_expression
            | expression NOT_EQUALS expression
            | expression AND expression
            | expression OR expression
+           | expression LSBRACE expression RSBRACE
            | NOT expression
            | LPAREN expression RPAREN
            | expression PLUS PLUS
