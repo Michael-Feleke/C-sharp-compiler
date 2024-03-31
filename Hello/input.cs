@@ -1,41 +1,25 @@
 using System;
 
-class Program 
+class Program
 {
     static void Main()
     {
-        // Print "Hello, world!"
-        Console.WriteLine("Hello, world!");
+        int num = 3;
 
-        // Perform arithmetic operations
-        string name = "Bob";
-        int num1 = 10;
-        int num2 = 5;
-        int sum = num1 + num2;
-        int difference = num1 - num2;
-        int product = num1 * num2;
-        int quotient = num1 / num2; // Cast one operand to double for accurate division
-        int remainder = num1 % num2;
-
-        // Print the results
-        Console.WriteLine($"Sum: {sum}");
-        Console.WriteLine($"Difference: {difference}");
-        Console.WriteLine($"Product: {product}");
-        Console.WriteLine($"Quotient: {quotient}");
-        Console.WriteLine($"Remainder: {remainder}");
-        int x=2;
-
-        if(x>0)
-        
-            Console.WriteLine("x is positive");
-        
-        else{
-            Console.ReadLine();
-            int y=9;
-            int d=235;
-
+        switch (num)
+        {
+            case 1:
+                Console.WriteLine("Number is 1");
+                break;
+            case 2:
+                Console.WriteLine("Number is 2");
+                break;
+            case 3:
+                Console.WriteLine("Number is 3");
+                break;
+            default:
+                Console.WriteLine("Number is not 1, 2, or 3");
+                break;
         }
-
-
     }
 }

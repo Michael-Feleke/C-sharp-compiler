@@ -35,6 +35,7 @@ typedef struct {
 
 %token USING CLASS STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT
 %token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION COLON IF ELSE WHILE RETURN SWITCH VOID CONSOLE WRITE_LINE READ_LINE
+CASE DEFAULT BREAK CONTINUE 
 
 %left OR
 %left AND
@@ -61,6 +62,21 @@ statement : expression_statement
           | conditional_statement
 
 conditional_statement : if_statements
+                      | switch_statement 
+
+switch_statement : SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list BREAK SEMICOLON RBRACE 
+|SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list RBRACE 
+                  | SWITCH LPAREN expression RPAREN LBRACE RBRACE 
+                  ;
+
+case_list : case_list case_item
+          | case_item
+          ;
+
+case_item : CASE expression COLON statement_list BREAK SEMICOLON 
+| CASE expression COLON LBRACE statement_list RBRACE BREAK SEMICOLON
+| CASE expression COLON  statement_list 
+          ;
 
 if_statements : IF LPAREN expression RPAREN statement_list { printf("If statement.\n"); }
               | IF LPAREN expression RPAREN LBRACE statement_list RBRACE { printf("If-block statement.\n"); }

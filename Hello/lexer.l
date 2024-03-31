@@ -23,7 +23,7 @@ char* token_strings[] = {
     "CLASS", "STATIC", "SEMICOLON", "NUMBER",
     "ASSIGN", "MINUS", "PLUS", "MULTIPLY", "DIVIDE", "MODULO", "DOT", "LBRACKET", "RBRACKET",
     "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "LESS_EQUAL", "GREATER_THAN", "GREATER_EQUAL",
-    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "WHILE", "RETURN", "TRUE", "FALSE", "IDENTIFIER", "EOF", "END", "FOR", "DO", "BREAK", "CONTINUE", "NEW", "NULL", "THIS", "SUPER", "TYPEOF", "INSTANCEOF", "TRY", "CATCH", "FINALLY", "THROW", "SWITCH", "CASE", "DEFAULT", "WHITESPACE", "COMMENT", "LINE_COMMENT","QUESTION","COLON", "CONSOLE", "WRITE_LINE", "READ_LINE"
+    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "WHILE", "RETURN", "TRUE", "FALSE", "IDENTIFIER", "EOF", "END", "FOR", "DO", "BREAK", "CONTINUE", "NEW", "NULL", "THIS", "SUPER", "TYPEOF", "INSTANCEOF", "TRY", "CATCH", "FINALLY", "THROW", "SWITCH", "CASE", "DEFAULT", "WHITESPACE", "COMMENT", "LINE_COMMENT","QUESTION","COLON", "CONSOLE", "WRITE_LINE", "READ_LINE",
 };
 
 int search_symbol_table(char *name) {
@@ -79,6 +79,11 @@ char* search_symbol_tableByname(char *name) {
 "switch"                { return SWITCH; }
 "if"                { return IF; }
 "return"            {return RETURN;}
+"case"                {return CASE;}
+"default"                {return DEFAULT;}
+"while"                {return WHILE;}
+"break"                {return BREAK;}
+"continue"                {return CONTINUE;}
 
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }

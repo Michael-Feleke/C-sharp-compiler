@@ -80,7 +80,11 @@
      VOID = 296,
      CONSOLE = 297,
      WRITE_LINE = 298,
-     READ_LINE = 299
+     READ_LINE = 299,
+     CASE = 300,
+     DEFAULT = 301,
+     BREAK = 302,
+     CONTINUE = 303
    };
 #endif
 
@@ -99,7 +103,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 103 "parser.tab.h"
+#line 107 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
