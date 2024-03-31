@@ -88,7 +88,9 @@
      DOUBLE = 304,
      PRIVATE = 305,
      PUBLIC = 306,
-     PROTECTED = 307
+     PROTECTED = 307,
+     TRUE_VALUE = 308,
+     FALSE_VALUE = 309
    };
 #endif
 
@@ -107,7 +109,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 111 "parser.tab.h"
+#line 113 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

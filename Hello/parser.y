@@ -34,7 +34,7 @@ typedef struct {
 %token <strval> NUMBER
 
 %token USING CLASS VOID STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT IF ELSE SWITCH CASE DEFAULT BREAK RETURN
-%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION_MARK COLON WHILE FOR CONTINUE LSBRACE RSBRACE DOUBLE PRIVATE PUBLIC PROTECTED TRUE_VALUE FLASE_VALUE
+%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION_MARK COLON WHILE FOR CONTINUE LSBRACE RSBRACE DOUBLE PRIVATE PUBLIC PROTECTED TRUE_VALUE FALSE_VALUE
 
 %left OR
 %left AND
@@ -70,8 +70,8 @@ function_call : ID LPAREN RPAREN { printf("function_call.\n"); }
 
 continue_statement : CONTINUE SEMICOLON { printf("continue_statement.\n"); }
 
-loop_statement : while_statement { printf("loop_statement -> while_statement\n"); }
-               | for_statement { printf("loop_statement -> for_statement\n"); }
+loop_statement : while_statement 
+               | for_statement 
 
 
 while_statement : WHILE LPAREN statement RPAREN LBRACE statement_list RBRACE { printf("While statement block.\n"); }
@@ -209,11 +209,30 @@ class_body:statement_list { printf("class body");}
 function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration with modifier: %s\n", $3);
+                           char *identifier = $3;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
             }
-            | modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
+            | modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE {
+                           char *identifier = $3;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
+            }
             | type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration: %s\n", $2);
+                           char *identifier = $2;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
             }
 
             ;
@@ -225,8 +244,20 @@ modifier : STATIC { printf("Static modifier.\n"); }
 
 parameter_list : parameter
               | parameter_list COMMA parameter { printf("Parameter list.\n"); }
-parameter : type ID { printf("Parameter.\n"); }
-| STRING LSBRACE RSBRACE ID { printf("Parameter.\n"); };
+parameter : type ID { printf("Parameter.\n");
+                           char *identifier = $2;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      }  }
+| STRING LSBRACE RSBRACE ID { printf("Parameter.\n"); 
+                           char *identifier = $4;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } };
 
 func_body : statement_list
           |
@@ -238,6 +269,9 @@ console_list:expression
 
 | console_list COMMA expression { printf("Console list.\n"); }
 |expression PLUS statement_list { printf("console list.\n"); }
+
+bool_values:TRUE_VALUE | FALSE_VALUE;
+
 
 expression : primary_expression
            | expression PLUS expression 
@@ -280,6 +314,7 @@ primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
  }
                    | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); }
                    | NUMBER { printf("Primary expression (number): %s\n", $1); }
+                   | bool_values { printf("Primary expression (boolean)\n") }
 
 %%
 
