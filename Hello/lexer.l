@@ -19,13 +19,6 @@ struct symbol_entry {
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
 
-char* token_strings[] = {
-    "USING", "STRING", "STRING_LITERAL",
-    "CLASS", "STATIC", "SEMICOLON", "NUMBER",
-    "ASSIGN", "MINUS", "PLUS", "MULTIPLY", "DIVIDE", "MODULO", "DOT", "LBRACKET", "RBRACKET",
-    "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "LESS_EQUAL", "GREATER_THAN", "GREATER_EQUAL",
-    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE","PUBLIC","PRIVATE","PROTECTED" ,"TRUE_VALUE","FALSE_VALUE"
-};
 
 int search_symbol_table(char *name) {
     for (int i = 0; i < symbol_count; i++) {
@@ -37,7 +30,6 @@ int search_symbol_table(char *name) {
 
 void add_to_symbol_table(char *name, int token) {
     strcpy(symbol_table[symbol_count].name, name);
-    // strcpy(symbol_table[symbol_count].data_type, ""); // Initialize data_type to empty string
     symbol_table[symbol_count].token_type = token;
     symbol_count++;
 }
@@ -53,13 +45,6 @@ void displaySymbolTable() {
     printf("------------------------------------------------\n");
 }
 
-char* search_symbol_tableByname(char *name) {
-    for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0)
-            return token_strings[symbol_table[i].token_type];
-    }
-    return "UNKNOWN";
-}
 
 %}
 
