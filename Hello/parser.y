@@ -33,9 +33,8 @@ typedef struct {
 %token <strval> STRING_LITERAL ID
 %token <strval> NUMBER
 
-%token USING CLASS STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT
-%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION COLON IF ELSE WHILE RETURN SWITCH VOID CONSOLE WRITE_LINE READ_LINE
-CASE DEFAULT BREAK CONTINUE 
+%token USING CLASS VOID STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT IF ELSE SWITCH CASE DEFAULT BREAK RETURN
+%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION_MARK COLON WHILE FOR CONTINUE LSBRACE RSBRACE DOUBLE
 
 %left OR
 %left AND
@@ -44,59 +43,86 @@ CASE DEFAULT BREAK CONTINUE
 %left PLUS MINUS
 %left MULTIPLY DIVIDE MODULO
 %right NOT
+%left DOT
 
 %start program
 %%
 
-program : statement_list { printf("Parsing completed successfully.\n"); }
+program : statement_list 
         ;
 
-statement_list : statement
-               | statement_list statement
-               | 
+statement_list : statement 
+               | statement_list statement 
                ;
 
-statement : expression_statement 
+statement : expression_statement
           | declaration_statement 
           | directive_statement 
-          | conditional_statement
+          | conditional_statement 
+          | exit_statement 
+          | loop_statement 
+          | continue_statement 
+          | function_call 
+          |function_call SEMICOLON;
 
-conditional_statement : if_statements
+function_call : ID LPAREN RPAREN { printf("function_call.\n"); }
+| ID LPAREN expression RPAREN { printf("function_call.\n"); }
+
+continue_statement : CONTINUE SEMICOLON { printf("continue_statement.\n"); }
+
+loop_statement : while_statement { printf("loop_statement -> while_statement\n"); }
+               | for_statement { printf("loop_statement -> for_statement\n"); }
+
+
+while_statement : WHILE LPAREN statement RPAREN LBRACE statement_list RBRACE { printf("While statement block.\n"); }
+                | WHILE LPAREN statement RPAREN statement_list { printf("While statement.\n"); }
+                ;
+
+for_statement : FOR LPAREN statement SEMICOLON expression SEMICOLON expression RPAREN LBRACE statement RBRACE { printf("For statement block.\n"); }
+              | FOR LPAREN statement SEMICOLON expression SEMICOLON expression RPAREN statement { printf("For statement.\n"); }
+
+
+exit_statement : RETURN statement_list { printf("exit_statement.\n"); }
+               | BREAK SEMICOLON { printf("exit_statement.\n"); }
+               ;
+
+conditional_statement : if_statement 
                       | switch_statement 
-                      | ternary_statement
+                      | ternary_expression
+                      ;
 
-ternary_statement : expression QUESTION expression COLON expression { printf("Ternary statement.\n"); }
 
-switch_statement : SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list BREAK SEMICOLON RBRACE 
-|SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list RBRACE 
-                  | SWITCH LPAREN expression RPAREN LBRACE RBRACE 
-                  ;
+if_statement : IF LPAREN statement RPAREN LBRACE statement_list RBRACE { printf("If statement.\n"); }
+             | IF LPAREN statement RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE { printf("If-else statement.\n"); }
+             | IF LPAREN statement RPAREN LBRACE statement_list RBRACE ELSE statement_list { printf("If-else statement.\n"); }
+             | IF LPAREN statement RPAREN statement_list { printf("If statement.\n"); }
+             | IF LPAREN statement RPAREN statement_list ELSE statement_list { printf("If-else statement.\n"); }
+             | IF LPAREN statement RPAREN statement_list ELSE LBRACE statement_list RBRACE { printf("If-else statement.\n"); }
+             ;
 
-case_list : case_list case_item
-          | case_item
+
+switch_statement : SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list RBRACE { printf("Switch statement.\n"); }
+
+
+case_list : case_item 
+          | case_list case_item
           ;
 
-case_item : CASE expression COLON statement_list BREAK SEMICOLON 
-| CASE expression COLON LBRACE statement_list RBRACE BREAK SEMICOLON
-| CASE expression COLON  statement_list 
+case_item : CASE expression COLON statement_list 
+          | CASE expression COLON LBRACE statement RBRACE
           ;
+         
+ternary_expression : expression QUESTION_MARK expression COLON expression SEMICOLON { printf("Ternary expression.\n"); }
+                   | expression QUESTION_MARK LBRACE expression RBRACE COLON LBRACE expression RBRACE { printf("Ternary expression.\n"); }
 
-if_statements : IF LPAREN expression RPAREN statement_list { printf("If statement.\n"); }
-              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE { printf("If-block statement.\n"); }
-              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE statement { printf("If-else-block statement.\n"); }
-              | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE   LBRACE statement RBRACE { printf("If-else-block statement.\n"); }
-              | IF LPAREN expression RPAREN statement_list ELSE statement { printf("If-else statement.\n"); }
-              | IF LPAREN expression RPAREN statement_list ELSE LBRACE statement_list RBRACE { printf("If-else statement.\n"); }
-
-
-expression_statement : expression SEMICOLON { printf("Expression statement.\n"); }
+expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
+                     | expression;
 
 declaration_statement : var_declarations SEMICOLON 
                       | function_declarations
-                      | class_declarations
+                      | class_declarations 
                       
 var_declarations : var_declaration { printf("Declaration statement.\n"); }
-          ;
                  | type ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                                      char *identifier = $2;
                       int token = search_symbol_table(identifier);
@@ -107,13 +133,20 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                           add_to_symbol_table(identifier, ID); 
+                      } };
+                      | type LSBRACE RSBRACE ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
+                                     char *identifier = $4;
+                      int token = search_symbol_table(identifier);
+                      if (token != -1) {
+                          printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                          
+                      } else {
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                          add_to_symbol_table(identifier, ID); 
                       } }
-          ;
-                ;
 
-
-  
-        
+                 ;
                  
 var_declaration : type ID 
                   {
@@ -128,11 +161,27 @@ var_declaration : type ID
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                           add_to_symbol_table(identifier, ID); 
                       }
+                  };
+                  | type LSBRACE RSBRACE ID 
+                  {
+                      printf("Variable declaration: %s\n", $4);
+                      char *identifier = $4;
+                      int token = search_symbol_table(identifier);
+                      if (token != -1) {
+                          printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                          
+                      } else {
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                          add_to_symbol_table(identifier, ID); 
+                      }
                   }
                   ;
 
+
 type : INT
      | STRING
+     | DOUBLE
      | BOOL
      | VOID
      
@@ -149,34 +198,47 @@ class_declarations : CLASS ID LBRACE class_body RBRACE
                           add_to_symbol_table(identifier, ID); 
            }
            ;
-
-class_body:statement_list 
+  
+class_body:statement_list { printf("class body");}
+          |
           ;
 
 function_declarations : STATIC type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed static function declaration: %s\n", $3);
-                                                     char *identifier = $3;
-                          add_to_symbol_table(identifier, ID); 
             }
+            | STATIC type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
             | type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration: %s\n", $2);
-                                                     char *identifier = $2;
-                          add_to_symbol_table(identifier, ID); 
             }
+
             ;
 
+parameter_list : parameter
+              | parameter_list COMMA parameter { printf("Parameter list.\n"); }
+parameter : type ID { printf("Parameter.\n"); }
+| STRING LSBRACE RSBRACE ID { printf("Parameter.\n"); };
 
-
-func_body: statement_list
-           ;
+func_body : statement_list
+          |
+          ;
+          
+array_list: expression 
+| array_list COMMA expression 
+console_list:expression
+| console_list COMMA expression { printf("Console list.\n"); }
+|expression PLUS statement_list { printf("console list.\n"); }
 
 expression : primary_expression
            | expression PLUS expression 
            | expression MINUS expression
            | expression MULTIPLY expression
            | expression DIVIDE expression
+           | expression PLUS ASSIGN expression
+           | expression MINUS ASSIGN expression
+           | expression MULTIPLY ASSIGN expression
+           | expression DIVIDE ASSIGN expression
            | expression MODULO expression
            | expression LESS_THAN expression
            | expression LESS_EQUAL expression
@@ -194,19 +256,17 @@ expression : primary_expression
            | expression MINUS MINUS
            | MINUS expression
            | PLUS PLUS expression
-           | expression DOT expression LPAREN expression RPAREN
-           | CONSOLE DOT WRITE_LINE LPAREN expression RPAREN
-           | CONSOLE DOT READ_LINE LPAREN expression RPAREN
-           | 
+           | expression DOT expression LPAREN console_list RPAREN
+           | LBRACE array_list RBRACE { printf("Array list.\n"); }
            ;
 
-primary_expression : ID { printf("Primary expression (identifier): %s\n", $1); 
-                        char *identifier = $1;
-                        int token = search_symbol_table(identifier);
-                        if (token == -1) {
-                            printf("Error: Identifier '%s' does not exist in the symbol table.\n", identifier);
-                            yyerror("Identifier not declared");
-                            }
+primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
+           char *identifier = $1;
+                      int token = search_symbol_table(identifier);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
  }
                    | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); }
                    | NUMBER { printf("Primary expression (number): %s\n", $1); }

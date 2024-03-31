@@ -1,3 +1,4 @@
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +24,7 @@ char* token_strings[] = {
     "CLASS", "STATIC", "SEMICOLON", "NUMBER",
     "ASSIGN", "MINUS", "PLUS", "MULTIPLY", "DIVIDE", "MODULO", "DOT", "LBRACKET", "RBRACKET",
     "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "LESS_EQUAL", "GREATER_THAN", "GREATER_EQUAL",
-    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "WHILE", "RETURN", "TRUE", "FALSE", "IDENTIFIER", "EOF", "END", "FOR", "DO", "BREAK", "CONTINUE", "NEW", "NULL", "THIS", "SUPER", "TYPEOF", "INSTANCEOF", "TRY", "CATCH", "FINALLY", "THROW", "SWITCH", "CASE", "DEFAULT", "WHITESPACE", "COMMENT", "LINE_COMMENT","QUESTION","COLON", "CONSOLE", "WRITE_LINE", "READ_LINE",
+    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE"
 };
 
 int search_symbol_table(char *name) {
@@ -68,30 +69,29 @@ char* search_symbol_tableByname(char *name) {
 "void"              {printf("Keyword:void\n"); strcpy(symbol_table[symbol_count].data_type, "void"); return VOID; }
 "static"            {printf("Keyword:static\n"); return STATIC; }
 "int"               {printf("Keyword:int\n"); strcpy(symbol_table[symbol_count].data_type, "int"); return INT; }
+"double"               {printf("Keyword:double\n"); strcpy(symbol_table[symbol_count].data_type, "double"); return DOUBLE; }
 "bool"              {printf("Keyword:bool\n"); strcpy(symbol_table[symbol_count].data_type, "bool"); return BOOL; }
 "string"            {printf("Keyword:string\n"); strcpy(symbol_table[symbol_count].data_type, "string"); return STRING; }
 
-"Console"           {printf("Keyword:Console\n"); return CONSOLE; }
-"WriteLine"         {printf("Keyword:WriteLine\n"); return WRITE_LINE; }
-"ReadLine"          {printf("Keyword:ReadLine\n"); return READ_LINE; }
 
-"else"                { return ELSE; }
-"switch"                { return SWITCH; }
-"if"                { return IF; }
-"return"            {return RETURN;}
-"case"                {return CASE;}
-"default"                {return DEFAULT;}
-"while"                {return WHILE;}
-"break"                {return BREAK;}
-"continue"                {return CONTINUE;}
 
+"if"                {printf("Keyword:if\n"); return IF;}
+"else"              {printf("Keyword:else\n"); return ELSE;}
+"switch"            {printf("Keyword:switch\n"); return SWITCH;}
+"case"              {printf("Keyword:case\n"); return CASE;}
+"default"           {printf("Keyword:default\n"); return DEFAULT;}
+"break"             {printf("Keyword:break\n"); return BREAK;}
+"return"            {printf("Keyword:return\n"); return RETURN;}
+"while"             {printf("Keyword:while\n"); return WHILE;}
+"for"               {printf("Keyword:for\n"); return FOR;}
+"continue"          {printf("Keyword:continue\n"); return CONTINUE;}
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }
 "{"                 { return LBRACE; }
 "}"                 { return RBRACE; }
+"["                 { return LSBRACE; }
+"]"                 { return RSBRACE; }
 ";"                 { return SEMICOLON; }
-":"                 { return COLON; }
-"?"                 { return QUESTION; }
 "."                 { return DOT; }
 "="                 { return ASSIGN; }
 "-"                 { return MINUS; }
@@ -109,6 +109,10 @@ char* search_symbol_tableByname(char *name) {
 "&&"                { return AND; }
 "||"                { return OR; }
 "!"                 { return NOT; }
+"?"                 { return QUESTION_MARK; }
+":"                 { return COLON; }
+
+
 [0-9]+              { yylval.strval = strdup(yytext); return NUMBER; }
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.strval = strdup(yytext);
                           int index = search_symbol_table(yytext);
@@ -120,6 +124,7 @@ char* search_symbol_tableByname(char *name) {
                           }
                         }
 (\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext); return STRING_LITERAL; }
+
 \/\/[^\n]*           { /* Ignore single-line comments */ }
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/  { /* Ignore multi-line comments */ }
 [ \t\r]             ; // Ignore whitespace and newlines
