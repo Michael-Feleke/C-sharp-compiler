@@ -28,8 +28,6 @@ typedef struct {
 %type <strval> var_declaration
 %type <strval> primary_expression
 
-
-
 %token <strval> STRING_LITERAL ID
 %token <strval> NUMBER
 
