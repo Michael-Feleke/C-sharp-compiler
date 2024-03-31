@@ -550,11 +550,11 @@ static const yytype_uint16 yyrline[] =
      116,   118,   119,   121,   122,   123,   125,   126,   137,   151,
      165,   182,   183,   184,   185,   186,   189,   194,   200,   205,
      206,   209,   219,   227,   240,   241,   242,   243,   245,   246,
-     247,   254,   262,   263,   266,   267,   268,   270,   271,   273,
-     273,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
-     307,   315,   316,   317
+     247,   254,   262,   263,   266,   267,   269,   271,   272,   274,
+     274,   277,   278,   279,   280,   281,   282,   283,   284,   285,
+     286,   287,   288,   289,   290,   291,   292,   293,   294,   295,
+     296,   297,   298,   299,   300,   301,   302,   303,   304,   305,
+     308,   316,   317,   318
 };
 #endif
 
@@ -2243,28 +2243,28 @@ yyreduce:
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 270 "parser.y"
+#line 271 "parser.y"
     { printf("Console list.\n"); ;}
     break;
 
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 271 "parser.y"
+#line 272 "parser.y"
     { printf("console list.\n"); ;}
     break;
 
   case 109:
 
 /* Line 1455 of yacc.c  */
-#line 304 "parser.y"
+#line 305 "parser.y"
     { printf("Array list.\n"); ;}
     break;
 
   case 110:
 
 /* Line 1455 of yacc.c  */
-#line 307 "parser.y"
+#line 308 "parser.y"
     { printf("Primary expression (identifier): %s\n", (yyvsp[(1) - (1)].strval));
            char *identifier = (yyvsp[(1) - (1)].strval);
                       int token = search_symbol_table(identifier);
@@ -2278,21 +2278,21 @@ yyreduce:
   case 111:
 
 /* Line 1455 of yacc.c  */
-#line 315 "parser.y"
+#line 316 "parser.y"
     { printf("Primary expression (string literal): %s\n", (yyvsp[(1) - (1)].strval)); ;}
     break;
 
   case 112:
 
 /* Line 1455 of yacc.c  */
-#line 316 "parser.y"
+#line 317 "parser.y"
     { printf("Primary expression (number): %s\n", (yyvsp[(1) - (1)].strval)); ;}
     break;
 
   case 113:
 
 /* Line 1455 of yacc.c  */
-#line 317 "parser.y"
+#line 318 "parser.y"
     { printf("Primary expression (boolean)\n") ;}
     break;
 
@@ -2511,7 +2511,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 319 "parser.y"
+#line 320 "parser.y"
 
 
 void yyerror(const char *s) {

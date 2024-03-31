@@ -265,6 +265,7 @@ func_body : statement_list
           
 array_list: expression 
 | array_list COMMA expression 
+
 console_list:expression
 
 | console_list COMMA expression { printf("Console list.\n"); }
