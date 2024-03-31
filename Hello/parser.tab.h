@@ -85,7 +85,10 @@
      CONTINUE = 301,
      LSBRACE = 302,
      RSBRACE = 303,
-     DOUBLE = 304
+     DOUBLE = 304,
+     PRIVATE = 305,
+     PUBLIC = 306,
+     PROTECTED = 307
    };
 #endif
 
@@ -104,7 +107,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 108 "parser.tab.h"
+#line 111 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

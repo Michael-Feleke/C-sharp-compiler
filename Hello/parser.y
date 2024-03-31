@@ -34,7 +34,7 @@ typedef struct {
 %token <strval> NUMBER
 
 %token USING CLASS VOID STATIC LPAREN RPAREN LBRACE RBRACE SEMICOLON DOT IF ELSE SWITCH CASE DEFAULT BREAK RETURN
-%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION_MARK COLON WHILE FOR CONTINUE LSBRACE RSBRACE DOUBLE
+%token ASSIGN STRING BOOL INT MINUS PLUS MULTIPLY DIVIDE MODULO LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL EQUALS NOT_EQUALS AND OR NOT COMMA QUESTION_MARK COLON WHILE FOR CONTINUE LSBRACE RSBRACE DOUBLE PRIVATE PUBLIC PROTECTED
 
 %left OR
 %left AND
@@ -197,23 +197,31 @@ class_declarations : CLASS ID LBRACE class_body RBRACE
                                      char *identifier = $2;
                           add_to_symbol_table(identifier, ID); 
            }
+           | modifier CLASS ID LBRACE class_body RBRACE{
+            printf("Parsed class declaration with modifier: %s\n", $3);
+           }
            ;
   
 class_body:statement_list { printf("class body");}
           |
           ;
 
-function_declarations : STATIC type ID LPAREN RPAREN LBRACE func_body RBRACE
+function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
-                printf("Parsed static function declaration: %s\n", $3);
+                printf("Parsed function declaration with modifier: %s\n", $3);
             }
-            | STATIC type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
+            | modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
             | type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration: %s\n", $2);
             }
 
             ;
+
+modifier : STATIC { printf("Static modifier.\n"); }
+| PUBLIC { printf("Public modifier.\n"); }
+| PRIVATE { printf("Private modifier.\n"); }
+| PROTECTED { printf("Protected modifier.\n"); }
 
 parameter_list : parameter
               | parameter_list COMMA parameter { printf("Parameter list.\n"); }

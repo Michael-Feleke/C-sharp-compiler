@@ -24,7 +24,7 @@ char* token_strings[] = {
     "CLASS", "STATIC", "SEMICOLON", "NUMBER",
     "ASSIGN", "MINUS", "PLUS", "MULTIPLY", "DIVIDE", "MODULO", "DOT", "LBRACKET", "RBRACKET",
     "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "LESS_EQUAL", "GREATER_THAN", "GREATER_EQUAL",
-    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE"
+    "EQUALS", "NOT_EQUALS", "AND", "OR", "NOT", "INT",  "VOID", "BOOL","COMMA", "IF", "ELSE", "SWITCH", "CASE", "DEFAULT", "BREAK", "RETURN", "COLON", "QUESTION_MARK", "CONTINUE", "WHILE", "FOR","LSBRACE","RSBRACE","DOUBLE","PUBLIC","PRIVATE","PROTECTED"
 };
 
 int search_symbol_table(char *name) {
@@ -68,6 +68,9 @@ char* search_symbol_tableByname(char *name) {
 "class"             {printf("Keyword:class\n"); strcpy(symbol_table[symbol_count].data_type, "class"); return CLASS; }
 "void"              {printf("Keyword:void\n"); strcpy(symbol_table[symbol_count].data_type, "void"); return VOID; }
 "static"            {printf("Keyword:static\n"); return STATIC; }
+"public"            {printf("Keyword:public\n"); return PUBLIC; }
+"private"            {printf("Keyword:private\n"); return PRIVATE; }
+"protected"            {printf("Keyword:protected\n"); return PROTECTED; }
 "int"               {printf("Keyword:int\n"); strcpy(symbol_table[symbol_count].data_type, "int"); return INT; }
 "double"               {printf("Keyword:double\n"); strcpy(symbol_table[symbol_count].data_type, "double"); return DOUBLE; }
 "bool"              {printf("Keyword:bool\n"); strcpy(symbol_table[symbol_count].data_type, "bool"); return BOOL; }
