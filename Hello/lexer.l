@@ -11,50 +11,19 @@ struct symbol_entry {
     char data_type[20];
     int token_type;
     int line_num;
-<<<<<<< HEAD
-    int scope;
-    int scope_id;
-     // Added scope field
-=======
     int scope; // Added scope field
     int scope_id;
->>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 };
 
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
 int scope_count = 0; // Added scope count
-<<<<<<< HEAD
-int scope_id = 0; // Added scope id
-=======
 int scope_id_count = 0;
->>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 
-void add_to_symbol_table(char *name, int token, int line_number, int scope) {
-    // Check if the identifier already exists in the current scope
-    for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope_id == scope) {
-            fprintf(stderr, "Error: Identifier '%s' already exists in the current scope.\n", name);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    // Add the identifier to the symbol table
+void add_to_symbol_table(char *name, int token,int line_number) {
     strcpy(symbol_table[symbol_count].name, name);
     symbol_table[symbol_count].token_type = token;
     symbol_table[symbol_count].line_num = line_number;
-<<<<<<< HEAD
-    symbol_table[symbol_count].scope = scope;
-    symbol_table[symbol_count].scope_id = scope_id;
-
-    symbol_count++;
-}
-
-
-int search_symbol_table(char *name, int scopecount) {
-    for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope_id) {
-=======
     symbol_table[symbol_count].scope = scope_count; // Set scope
     symbol_table[symbol_count].scope_id = scope_id_count;
     symbol_count++;
@@ -62,14 +31,16 @@ int search_symbol_table(char *name, int scopecount) {
 
 int search_symbol_table(char *name, int scope, int scope_id) {
     for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope <= scope && symbol_table[i].scope_id == scope_id)
->>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope < scope){
+
+            return symbol_table[i].token_type;
+        }
+        else if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope && symbol_table[i].scope_id == scope_id) {
             return symbol_table[i].token_type;
         }
     }
-    return -1;  // Identifier not found in the current scope
+    return -1;
 }
-
 
 
 void displaySymbolTable() {
@@ -99,9 +70,6 @@ void displaySymbolTable() {
 "double"               {printf("Keyword:double\n"); strcpy(symbol_table[symbol_count].data_type, "double"); return DOUBLE; }
 "bool"              {printf("Keyword:bool\n"); strcpy(symbol_table[symbol_count].data_type, "bool"); return BOOL; }
 "string"            {printf("Keyword:string\n"); strcpy(symbol_table[symbol_count].data_type, "string"); return STRING; }
-
-
-
 "if"                {printf("Keyword:if\n"); return IF;}
 "else"              {printf("Keyword:else\n"); return ELSE;}
 "switch"            {printf("Keyword:switch\n"); return SWITCH;}
@@ -114,11 +82,7 @@ void displaySymbolTable() {
 "continue"          {printf("Keyword:continue\n"); return CONTINUE;}
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }
-<<<<<<< HEAD
-"{"                 { scope_count++; scope_id ++; return LBRACE; } // Increment scope count
-=======
 "{"                 { scope_count++; scope_id_count++; return LBRACE; } // Increment scope count
->>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 "}"                 { scope_count--; return RBRACE; } // Decrement scope count
 "["                 { return LSBRACE; }
 "]"                 { return RSBRACE; }

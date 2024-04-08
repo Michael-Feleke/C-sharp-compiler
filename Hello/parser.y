@@ -114,8 +114,7 @@ case_item : CASE expression COLON statement_list
          
 ternary_expression : expression QUESTION_MARK expression COLON expression SEMICOLON { printf("Ternary expression.\n"); }
                    | expression QUESTION_MARK LBRACE expression RBRACE COLON LBRACE expression RBRACE { printf("Ternary expression.\n"); }
-
-expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
+                   expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
                      | expression;
 
 declaration_statement : var_declarations SEMICOLON 
@@ -189,8 +188,7 @@ directive_statement:USING ID SEMICOLON { printf("Using directive.\n");
                       char *identifier = $2;
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
 }
-
-class_declarations : CLASS ID LBRACE class_body RBRACE
+class_declarations : CLASS ID LBRACE { } class_body RBRACE
            {
                printf("Parsed class declaration: %s\n", $2);
                                      char *identifier = $2;
@@ -250,7 +248,6 @@ modifier : STATIC { printf("Static modifier.\n"); }
 | PUBLIC { printf("Public modifier.\n"); }
 | PRIVATE { printf("Private modifier.\n"); }
 | PROTECTED { printf("Protected modifier.\n"); }
-
 parameter_list : parameter
               | parameter_list COMMA parameter { printf("Parameter list.\n"); }
 parameter : type ID { printf("Parameter.\n");
