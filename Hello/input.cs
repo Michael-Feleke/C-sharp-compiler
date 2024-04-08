@@ -41,7 +41,12 @@ class Program
     }
 
     int fun(int x){
+<<<<<<< HEAD
 \        return num1>x ? 1 : 0;
+=======
+        int num1;
+        return num1>x ? 1 : 0;
+>>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
     }
     int num1;
 

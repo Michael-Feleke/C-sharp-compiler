@@ -11,15 +11,24 @@ struct symbol_entry {
     char data_type[20];
     int token_type;
     int line_num;
+<<<<<<< HEAD
     int scope;
     int scope_id;
      // Added scope field
+=======
+    int scope; // Added scope field
+    int scope_id;
+>>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 };
 
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
 int scope_count = 0; // Added scope count
+<<<<<<< HEAD
 int scope_id = 0; // Added scope id
+=======
+int scope_id_count = 0;
+>>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 
 void add_to_symbol_table(char *name, int token, int line_number, int scope) {
     // Check if the identifier already exists in the current scope
@@ -34,6 +43,7 @@ void add_to_symbol_table(char *name, int token, int line_number, int scope) {
     strcpy(symbol_table[symbol_count].name, name);
     symbol_table[symbol_count].token_type = token;
     symbol_table[symbol_count].line_num = line_number;
+<<<<<<< HEAD
     symbol_table[symbol_count].scope = scope;
     symbol_table[symbol_count].scope_id = scope_id;
 
@@ -44,6 +54,16 @@ void add_to_symbol_table(char *name, int token, int line_number, int scope) {
 int search_symbol_table(char *name, int scopecount) {
     for (int i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope_id) {
+=======
+    symbol_table[symbol_count].scope = scope_count; // Set scope
+    symbol_table[symbol_count].scope_id = scope_id_count;
+    symbol_count++;
+}
+
+int search_symbol_table(char *name, int scope, int scope_id) {
+    for (int i = 0; i < symbol_count; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope <= scope && symbol_table[i].scope_id == scope_id)
+>>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
             return symbol_table[i].token_type;
         }
     }
@@ -54,13 +74,13 @@ int search_symbol_table(char *name, int scopecount) {
 
 void displaySymbolTable() {
     printf("Symbol Table:\n");
-    printf("------------------------------------------------------------------\n");
-    printf("%-20s | %-15s | %-10s | %-10s | %-10s \n", "Name", "Data Type", "Token Type","Line Number", "Scope"); // Added Scope
-    printf("------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------\n");
+    printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s |\n", "Name", "Data Type", "Token Type","Line Number", "Scope", "Scope ID"); // Added Scope
+    printf("----------------------------------------------------------------------------------------\n");
     for (int i = 0; i < symbol_count; i++) {
-        printf("%-20s | %-15s | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope); // Print scope
+        printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope, symbol_table[i].scope_id); // Print scope
     }
-    printf("------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------\n");
 }
 
 %}
@@ -94,7 +114,11 @@ void displaySymbolTable() {
 "continue"          {printf("Keyword:continue\n"); return CONTINUE;}
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }
+<<<<<<< HEAD
 "{"                 { scope_count++; scope_id ++; return LBRACE; } // Increment scope count
+=======
+"{"                 { scope_count++; scope_id_count++; return LBRACE; } // Increment scope count
+>>>>>>> fcd9619c7ab55bcd950ea05b5d7aeaf40081b912
 "}"                 { scope_count--; return RBRACE; } // Decrement scope count
 "["                 { return LSBRACE; }
 "]"                 { return RSBRACE; }
@@ -125,7 +149,7 @@ void displaySymbolTable() {
 [0-9]+|[0-9]+\.[0-9]+             { yylval.strval = strdup(yytext); return NUMBER; }
 
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.strval = strdup(yytext);
-                          int index = search_symbol_table(yytext,-1);
+                          int index = search_symbol_table(yytext,-1,-1);
                           if (index == -1) {
                               return ID;
                           }
