@@ -42,6 +42,7 @@ class Program
     }
 
     int fun(int x){
+        int num1;
         return num1>x ? 1 : 0;
     }
 }
