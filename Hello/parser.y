@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern int search_symbol_table(char *name);
-extern void add_to_symbol_table(char *name, int type);
+extern int search_symbol_table(char *name, int scope);
+extern void add_to_symbol_table(char *name, int type,int line_number,int scope);
 extern void displaySymbolTable();
-extern int line_number;
+extern int yylineno;
+extern int scope_count;
 
 extern FILE *yyin;
 extern int yylex();
@@ -123,25 +124,25 @@ declaration_statement : var_declarations SEMICOLON
 var_declarations : var_declaration { printf("Declaration statement.\n"); }
                  | type ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                                      char *identifier = $2;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                       } };
                       | type LSBRACE RSBRACE ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                                      char *identifier = $4;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                       } }
 
                  ;
@@ -150,28 +151,28 @@ var_declaration : type ID
                   {
                       printf("Variable declaration: %s\n", $2);
                       char *identifier = $2;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                       }
                   };
                   | type LSBRACE RSBRACE ID 
                   {
                       printf("Variable declaration: %s\n", $4);
                       char *identifier = $4;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                       }
                   }
                   ;
@@ -186,14 +187,14 @@ type : INT
 
 directive_statement:USING ID SEMICOLON { printf("Using directive.\n"); 
                       char *identifier = $2;
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
 }
 
 class_declarations : CLASS ID LBRACE class_body RBRACE
            {
                printf("Parsed class declaration: %s\n", $2);
                                      char *identifier = $2;
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
            }
            | modifier CLASS ID LBRACE class_body RBRACE{
             printf("Parsed class declaration with modifier: %s\n", $3);
@@ -208,17 +209,17 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration with modifier: %s\n", $3);
                            char *identifier = $3;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
             }
             | modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE {
                            char *identifier = $3;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
             }
@@ -226,9 +227,19 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
                 printf("Parsed function declaration: %s\n", $2);
                            char *identifier = $2;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
+            }
+            |type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
+            {
+                printf("Parsed function declaration: %s\n", $2);
+                           char *identifier = $2;
+                      int token = search_symbol_table(identifier,scope_count);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
             }
@@ -244,16 +255,16 @@ parameter_list : parameter
               | parameter_list COMMA parameter { printf("Parameter list.\n"); }
 parameter : type ID { printf("Parameter.\n");
                            char *identifier = $2;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       }  }
 | STRING LSBRACE RSBRACE ID { printf("Parameter.\n"); 
                            char *identifier = $4;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } };
 
@@ -305,9 +316,9 @@ expression : primary_expression
 
 primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
            char *identifier = $1;
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier,scope_count);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
  }
@@ -318,7 +329,7 @@ primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Syntax error at line %d: %s\n", line_number, s);
+    fprintf(stderr, "Syntax error at line %d: %s\n", yylineno, s);
     exit(EXIT_FAILURE);
 }
 

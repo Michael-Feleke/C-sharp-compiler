@@ -1,4 +1,3 @@
-
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,47 +5,51 @@
 #include "parser.tab.h"
 
 extern YYSTYPE yylval;
-extern int line_number; // Declaration of line_number here
-
-int line_number = 1;
 
 struct symbol_entry {
     char name[50];
     char data_type[20];
     int token_type;
+    int line_num;
+    int scope; // Added scope field
 };
 
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
+int scope_count = 0; // Added scope count
 
+void add_to_symbol_table(char *name, int token,int line_number) {
+    strcpy(symbol_table[symbol_count].name, name);
+    symbol_table[symbol_count].token_type = token;
+    symbol_table[symbol_count].line_num = line_number;
+    symbol_table[symbol_count].scope = scope_count; // Set scope
 
-int search_symbol_table(char *name) {
+    symbol_count++;
+}
+
+int search_symbol_table(char *name, int scope) {
     for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0)
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope)
             return symbol_table[i].token_type;
     }
     return -1;
 }
 
-void add_to_symbol_table(char *name, int token) {
-    strcpy(symbol_table[symbol_count].name, name);
-    symbol_table[symbol_count].token_type = token;
-    symbol_count++;
-}
 
 void displaySymbolTable() {
     printf("Symbol Table:\n");
-    printf("------------------------------------------------\n");
-    printf("%-20s | %-15s | %-10s\n", "Name", "Data Type", "Token Type");
-    printf("------------------------------------------------\n");
+    printf("------------------------------------------------------------------\n");
+    printf("%-20s | %-15s | %-10s | %-10s | %-10s \n", "Name", "Data Type", "Token Type","Line Number", "Scope"); // Added Scope
+    printf("------------------------------------------------------------------\n");
     for (int i = 0; i < symbol_count; i++) {
-        printf("%-20s | %-15s | %-10d\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type);
+        printf("%-20s | %-15s | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope); // Print scope
     }
-    printf("------------------------------------------------\n");
+    printf("------------------------------------------------------------------\n");
 }
 
-
 %}
+
+%option yylineno
 
 %%
 "using"             {  return USING; }
@@ -75,8 +78,8 @@ void displaySymbolTable() {
 "continue"          {printf("Keyword:continue\n"); return CONTINUE;}
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }
-"{"                 { return LBRACE; }
-"}"                 { return RBRACE; }
+"{"                 { scope_count++; return LBRACE; } // Increment scope count
+"}"                 { scope_count--; return RBRACE; } // Decrement scope count
 "["                 { return LSBRACE; }
 "]"                 { return RSBRACE; }
 ";"                 { return SEMICOLON; }
@@ -103,9 +106,10 @@ void displaySymbolTable() {
 "false"             { return FALSE_VALUE; }
 
 
-[0-9]+              { yylval.strval = strdup(yytext); return NUMBER; }
+[0-9]+|[0-9]+\.[0-9]+             { yylval.strval = strdup(yytext); return NUMBER; }
+
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.strval = strdup(yytext);
-                          int index = search_symbol_table(yytext);
+                          int index = search_symbol_table(yytext,-1);
                           if (index == -1) {
                               return ID;
                           }
@@ -119,7 +123,7 @@ void displaySymbolTable() {
 \/\/[^\n]*           { /* Ignore single-line comments */ }
 \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/  { /* Ignore multi-line comments */ }
 [ \t\r]             ; // Ignore whitespace and newlines
-\n                  { line_number++;  }
+\n                  ;
 .                   ; // Ignore unrecognized characters
 %%
 
