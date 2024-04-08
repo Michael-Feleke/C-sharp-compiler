@@ -11,29 +11,45 @@ struct symbol_entry {
     char data_type[20];
     int token_type;
     int line_num;
-    int scope; // Added scope field
+    int scope;
+    int scope_id;
+     // Added scope field
 };
 
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
 int scope_count = 0; // Added scope count
+int scope_id = 0; // Added scope id
 
-void add_to_symbol_table(char *name, int token,int line_number) {
+void add_to_symbol_table(char *name, int token, int line_number, int scope) {
+    // Check if the identifier already exists in the current scope
+    for (int i = 0; i < symbol_count; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope_id == scope) {
+            fprintf(stderr, "Error: Identifier '%s' already exists in the current scope.\n", name);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Add the identifier to the symbol table
     strcpy(symbol_table[symbol_count].name, name);
     symbol_table[symbol_count].token_type = token;
     symbol_table[symbol_count].line_num = line_number;
-    symbol_table[symbol_count].scope = scope_count; // Set scope
+    symbol_table[symbol_count].scope = scope;
+    symbol_table[symbol_count].scope_id = scope_id;
 
     symbol_count++;
 }
 
-int search_symbol_table(char *name, int scope) {
+
+int search_symbol_table(char *name, int scopecount) {
     for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope)
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope_id) {
             return symbol_table[i].token_type;
+        }
     }
-    return -1;
+    return -1;  // Identifier not found in the current scope
 }
+
 
 
 void displaySymbolTable() {
@@ -78,7 +94,7 @@ void displaySymbolTable() {
 "continue"          {printf("Keyword:continue\n"); return CONTINUE;}
 "("                 { return LPAREN; }
 ")"                 { return RPAREN; }
-"{"                 { scope_count++; return LBRACE; } // Increment scope count
+"{"                 { scope_count++; scope_id ++; return LBRACE; } // Increment scope count
 "}"                 { scope_count--; return RBRACE; } // Decrement scope count
 "["                 { return LSBRACE; }
 "]"                 { return RSBRACE; }

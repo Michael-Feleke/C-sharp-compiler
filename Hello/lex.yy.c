@@ -520,29 +520,45 @@ struct symbol_entry {
     char data_type[20];
     int token_type;
     int line_num;
-    int scope; // Added scope field
+    int scope;
+    int scope_id;
+     // Added scope field
 };
 
 struct symbol_entry symbol_table[100];
 int symbol_count = 0;
 int scope_count = 0; // Added scope count
+int scope_id = 0; // Added scope id
 
-void add_to_symbol_table(char *name, int token,int line_number) {
+void add_to_symbol_table(char *name, int token, int line_number, int scope) {
+    // Check if the identifier already exists in the current scope
+    for (int i = 0; i < symbol_count; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope_id == scope) {
+            fprintf(stderr, "Error: Identifier '%s' already exists in the current scope.\n", name);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Add the identifier to the symbol table
     strcpy(symbol_table[symbol_count].name, name);
     symbol_table[symbol_count].token_type = token;
     symbol_table[symbol_count].line_num = line_number;
-    symbol_table[symbol_count].scope = scope_count; // Set scope
+    symbol_table[symbol_count].scope = scope;
+    symbol_table[symbol_count].scope_id = scope_id;
 
     symbol_count++;
 }
 
-int search_symbol_table(char *name, int scope) {
+
+int search_symbol_table(char *name, int scopecount) {
     for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope)
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope_id) {
             return symbol_table[i].token_type;
+        }
     }
-    return -1;
+    return -1;  // Identifier not found in the current scope
 }
+
 
 
 void displaySymbolTable() {
@@ -556,7 +572,7 @@ void displaySymbolTable() {
     printf("------------------------------------------------------------------\n");
 }
 
-#line 560 "lex.yy.c"
+#line 576 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -707,9 +723,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 54 "lexer.l"
+#line 70 "lexer.l"
 
-#line 713 "lex.yy.c"
+#line 729 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -802,257 +818,257 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 55 "lexer.l"
+#line 71 "lexer.l"
 {  return USING; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 56 "lexer.l"
+#line 72 "lexer.l"
 {printf("Keyword:class\n"); strcpy(symbol_table[symbol_count].data_type, "class"); return CLASS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 57 "lexer.l"
+#line 73 "lexer.l"
 {printf("Keyword:void\n"); strcpy(symbol_table[symbol_count].data_type, "void"); return VOID; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 58 "lexer.l"
+#line 74 "lexer.l"
 {printf("Keyword:static\n"); return STATIC; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 59 "lexer.l"
+#line 75 "lexer.l"
 {printf("Keyword:public\n"); return PUBLIC; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 60 "lexer.l"
+#line 76 "lexer.l"
 {printf("Keyword:private\n"); return PRIVATE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 61 "lexer.l"
+#line 77 "lexer.l"
 {printf("Keyword:protected\n"); return PROTECTED; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "lexer.l"
+#line 78 "lexer.l"
 {printf("Keyword:int\n"); strcpy(symbol_table[symbol_count].data_type, "int"); return INT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 63 "lexer.l"
+#line 79 "lexer.l"
 {printf("Keyword:double\n"); strcpy(symbol_table[symbol_count].data_type, "double"); return DOUBLE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 64 "lexer.l"
+#line 80 "lexer.l"
 {printf("Keyword:bool\n"); strcpy(symbol_table[symbol_count].data_type, "bool"); return BOOL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 65 "lexer.l"
+#line 81 "lexer.l"
 {printf("Keyword:string\n"); strcpy(symbol_table[symbol_count].data_type, "string"); return STRING; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 69 "lexer.l"
+#line 85 "lexer.l"
 {printf("Keyword:if\n"); return IF;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 70 "lexer.l"
+#line 86 "lexer.l"
 {printf("Keyword:else\n"); return ELSE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 71 "lexer.l"
+#line 87 "lexer.l"
 {printf("Keyword:switch\n"); return SWITCH;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 72 "lexer.l"
+#line 88 "lexer.l"
 {printf("Keyword:case\n"); return CASE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 73 "lexer.l"
+#line 89 "lexer.l"
 {printf("Keyword:default\n"); return DEFAULT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 74 "lexer.l"
+#line 90 "lexer.l"
 {printf("Keyword:break\n"); return BREAK;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 75 "lexer.l"
+#line 91 "lexer.l"
 {printf("Keyword:return\n"); return RETURN;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 76 "lexer.l"
+#line 92 "lexer.l"
 {printf("Keyword:while\n"); return WHILE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 77 "lexer.l"
+#line 93 "lexer.l"
 {printf("Keyword:for\n"); return FOR;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 78 "lexer.l"
+#line 94 "lexer.l"
 {printf("Keyword:continue\n"); return CONTINUE;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 79 "lexer.l"
+#line 95 "lexer.l"
 { return LPAREN; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 80 "lexer.l"
+#line 96 "lexer.l"
 { return RPAREN; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 81 "lexer.l"
-{ scope_count++; return LBRACE; } // Increment scope count
+#line 97 "lexer.l"
+{ scope_count++; scope_id ++; return LBRACE; } // Increment scope count
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 82 "lexer.l"
+#line 98 "lexer.l"
 { scope_count--; return RBRACE; } // Decrement scope count
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 83 "lexer.l"
+#line 99 "lexer.l"
 { return LSBRACE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 84 "lexer.l"
+#line 100 "lexer.l"
 { return RSBRACE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 85 "lexer.l"
+#line 101 "lexer.l"
 { return SEMICOLON; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 86 "lexer.l"
+#line 102 "lexer.l"
 { return DOT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 87 "lexer.l"
+#line 103 "lexer.l"
 { return ASSIGN; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 88 "lexer.l"
+#line 104 "lexer.l"
 { return MINUS; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 89 "lexer.l"
+#line 105 "lexer.l"
 { return PLUS; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 90 "lexer.l"
+#line 106 "lexer.l"
 { return MULTIPLY; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 91 "lexer.l"
+#line 107 "lexer.l"
 { return COMMA; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 92 "lexer.l"
+#line 108 "lexer.l"
 { return DIVIDE; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 93 "lexer.l"
+#line 109 "lexer.l"
 { return MODULO; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 94 "lexer.l"
+#line 110 "lexer.l"
 { return LESS_THAN; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 95 "lexer.l"
+#line 111 "lexer.l"
 { return LESS_EQUAL; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 96 "lexer.l"
+#line 112 "lexer.l"
 { return GREATER_THAN; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 97 "lexer.l"
+#line 113 "lexer.l"
 { return GREATER_EQUAL; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 98 "lexer.l"
+#line 114 "lexer.l"
 { return EQUALS; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 99 "lexer.l"
+#line 115 "lexer.l"
 { return NOT_EQUALS; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 100 "lexer.l"
+#line 116 "lexer.l"
 { return AND; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 101 "lexer.l"
+#line 117 "lexer.l"
 { return OR; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 102 "lexer.l"
+#line 118 "lexer.l"
 { return NOT; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 103 "lexer.l"
+#line 119 "lexer.l"
 { return QUESTION_MARK; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 104 "lexer.l"
+#line 120 "lexer.l"
 { return COLON; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 105 "lexer.l"
+#line 121 "lexer.l"
 { return TRUE_VALUE; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 106 "lexer.l"
+#line 122 "lexer.l"
 { return FALSE_VALUE; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 109 "lexer.l"
+#line 125 "lexer.l"
 { yylval.strval = strdup(yytext); return NUMBER; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 111 "lexer.l"
+#line 127 "lexer.l"
 { yylval.strval = strdup(yytext);
                           int index = search_symbol_table(yytext,-1);
                           if (index == -1) {
@@ -1065,40 +1081,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 120 "lexer.l"
+#line 136 "lexer.l"
 { yylval.strval = strdup(yytext); return STRING_LITERAL; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 123 "lexer.l"
+#line 139 "lexer.l"
 { /* Ignore single-line comments */ }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 124 "lexer.l"
+#line 140 "lexer.l"
 { /* Ignore multi-line comments */ }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 125 "lexer.l"
+#line 141 "lexer.l"
 ; // Ignore whitespace and newlines
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 126 "lexer.l"
+#line 142 "lexer.l"
 ;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 127 "lexer.l"
+#line 143 "lexer.l"
 ; // Ignore unrecognized characters
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 128 "lexer.l"
+#line 144 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1102 "lex.yy.c"
+#line 1118 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 
@@ -1982,7 +1998,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 128 "lexer.l"
+#line 144 "lexer.l"
 
 
 int yywrap() {

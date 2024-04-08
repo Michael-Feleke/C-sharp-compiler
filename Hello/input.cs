@@ -34,7 +34,6 @@ class Program
 
         }       
         // Add the two numbers
-        int num2 = 20;
         int sum = num1 + num2;
 
         // Print the sum
@@ -42,6 +41,8 @@ class Program
     }
 
     int fun(int x){
-        return num1>x ? 1 : 0;
+\        return num1>x ? 1 : 0;
     }
+    int num1;
+
 }
