@@ -1951,7 +1951,7 @@ yyreduce:
   case 112: /* primary_expression: ID  */
 #line 317 "parser.y"
                         { printf("Primary expression (identifier): %s\n", (yyvsp[0].strval));
-           char *identifier = (yyvsp[0].strval);
+                    char *identifier = (yyvsp[0].strval);
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
                       if (token == -1) {
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 

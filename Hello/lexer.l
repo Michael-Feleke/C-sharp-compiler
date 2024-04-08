@@ -31,20 +31,23 @@ void add_to_symbol_table(char *name, int token,int line_number) {
 
 int search_symbol_table(char *name, int scope, int scope_id) {
     for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope <= scope && symbol_table[i].scope_id == scope_id)
+        if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope < scope){
             return symbol_table[i].token_type;
+        } else if(symbol_table[i].scope == scope && symbol_table[i].scope_id == scope_id){
+            return symbol_table[i].token_type;
+        }
     }
-    return -1;
+        return -1;
 }
 
 
 void displaySymbolTable() {
     printf("Symbol Table:\n");
     printf("----------------------------------------------------------------------------------------\n");
-    printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s |\n", "Name", "Data Type", "Token Type","Line Number", "Scope", "Scope ID"); // Added Scope
+    printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s |\n", "Name", "Data Type", "Token Type", "Scope", "Scope ID","Line No."); // Added Scope
     printf("----------------------------------------------------------------------------------------\n");
     for (int i = 0; i < symbol_count; i++) {
-        printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope, symbol_table[i].scope_id); // Print scope
+        printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].scope, symbol_table[i].scope_id, symbol_table[i].line_num); // Print scope
     }
     printf("----------------------------------------------------------------------------------------\n");
 }

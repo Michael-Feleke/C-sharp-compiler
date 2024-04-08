@@ -315,7 +315,7 @@ expression : primary_expression
            ;
 
 primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
-           char *identifier = $1;
+                    char *identifier = $1;
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
                       if (token == -1) {
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
