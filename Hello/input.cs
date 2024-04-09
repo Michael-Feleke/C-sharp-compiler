@@ -3,11 +3,12 @@ using System;
 class Program
 {
 
+
     static void Main(string[] args)
     {
         // Declare and initialize the two numbers
         int num1 = 10;
-
+        
         while(num1 > 20){
 
         // int num1;
@@ -18,8 +19,10 @@ class Program
             num2=num2 +1;
         }
     
-
         int day = 1;
+        string daadfy="wediend";
+        int summmm;
+        summmm=daadfy;
 
         switch (day)
         {
@@ -39,7 +42,8 @@ class Program
 
         }       
         // Add the two numbers
-        int sum = num1 + num2;
+        string hello= "hello";
+        // int sum = num1 + hello;
 
         // Print the sum
         Console.WriteLine($"The sum of {num1} and {num2} is: {sum}");

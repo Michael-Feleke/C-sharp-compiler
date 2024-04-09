@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "parser.tab.h"
 
 extern YYSTYPE yylval;
@@ -53,6 +54,51 @@ void displaySymbolTable() {
     }
     printf("----------------------------------------------------------------------------------------\n");
 }
+
+char* get_data_type(char* token_name) {
+    for (int i = 0; i < symbol_count; i++) {
+        if (strcmp(symbol_table[i].name, token_name) == 0) {
+            if (strlen(symbol_table[i].data_type) > 0) {
+
+                return symbol_table[i].data_type;
+            } else {
+                return "UNKNOWN";
+            }
+        }
+    }
+    return "UNKNOWN";
+}
+
+bool check_constant_type_For_String(char *name){
+
+
+  if(strcmp(get_data_type(name),"string")==0){
+
+    return true;
+ }
+return false;
+ 
+}
+bool check_constant_type_For_Number(char *name){
+
+
+  if(strcmp(get_data_type(name),"int")==0 || strcmp(get_data_type(name),"double")==0){
+
+    return true;
+ }
+return false;
+ 
+}
+// bool check_constant_type_For_Bool(char *name){
+
+
+//   if(strcmp(get_data_type(name),""true"")==0 || strcmp(get_data_type(name),"false")==0){
+
+//     return true;
+//  }
+// return false;
+ 
+// }
 
 %}
 

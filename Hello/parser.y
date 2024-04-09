@@ -2,8 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 extern int search_symbol_table(char *name, int scope, int scope_id);
 extern void add_to_symbol_table(char *name, int type,int line_number,int scope,int scope_id);
+extern char* get_data_type(char *token_name);
+extern bool check_constant_type_For_String(char *name);
+extern bool check_constant_type_For_Number(char *name);
+// extern bool check_constant_type_For_Bool_values(char *name);
 extern void displaySymbolTable();
 extern int yylineno;
 extern int scope_count;
@@ -17,6 +22,7 @@ void yyerror(const char *s);
 typedef struct {
     char* strval;
     int intval;
+    bool boolval;
 } YYSTYPE;
 #define YYSTYPE_IS_DECLARED
 
@@ -74,7 +80,7 @@ loop_statement : while_statement
                | for_statement 
 
 
-while_statement : WHILE LPAREN statement RPAREN LBRACE statement_list RBRACE { printf("While statement block.\n"); }
+while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE { printf("While statement block.\n"); }
                 | WHILE LPAREN statement RPAREN statement_list { printf("While statement.\n"); }
                 ;
 
@@ -114,15 +120,15 @@ case_item : CASE expression COLON statement_list
          
 ternary_expression : expression QUESTION_MARK expression COLON expression SEMICOLON { printf("Ternary expression.\n"); }
                    | expression QUESTION_MARK LBRACE expression RBRACE COLON LBRACE expression RBRACE { printf("Ternary expression.\n"); }
-                   expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
-                     | expression;
+expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
+                     
 
 declaration_statement : var_declarations SEMICOLON 
                       | function_declarations
                       | class_declarations 
                       
 var_declarations : var_declaration { printf("Declaration statement.\n"); }
-                    | type ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
+                    | type ID ASSIGN STRING_LITERAL{ printf("Declaration statement with assignment.\n");
                       char *identifier = $2;
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
                       if (token != -1) {
@@ -131,7 +137,40 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
-                      } };
+                      } 
+                      
+                      if(!check_constant_type_For_String($2)){
+                                                
+                                                
+                                               yyerror("Semantic error: oprades are in differnt type can not be assined\n");
+                                                 }
+
+                      };
+                    | type ID ASSIGN NUMBER{ printf("Declaration statement with assignment.\n");
+                      char *identifier = $2;
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count);
+                      if (token != -1) {
+                          printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      } else {
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                      }
+                      if(!check_constant_type_For_Number($2)){
+                        yyerror("Semantic error: oprades are in different type can not be assigned\n");
+                      }
+                      };
+                    | type ID ASSIGN bool_values{ printf("Declaration statement with assignment.\n");
+                      char *identifier = $2;
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count);
+                      if (token != -1) {
+                          printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      } else {
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                      }
+                      }
                     | type LSBRACE RSBRACE ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                                      char *identifier = $4;
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
@@ -327,6 +366,8 @@ primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
 
 void yyerror(const char *s) {
     fprintf(stderr, "Syntax error at line %d: %s\n", yylineno, s);
+
+
     exit(EXIT_FAILURE);
 }
 
