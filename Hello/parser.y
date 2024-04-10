@@ -19,6 +19,16 @@ extern int yylex();
 
 void yyerror(const char *s);
 
+void check_type_mismatch(char* type1, char * type2 ){
+    if(strcmp(get_data_type(type1),get_data_type(type2))!=0){
+        if(strcmp(get_data_type(type2),"UNKNOWN")==0){
+            yyerror("identifier do not declared");
+
+        }
+          else  yyerror("Operands has not same data type");
+           }
+}
+
 typedef struct {
     char* strval;
     int intval;
@@ -27,6 +37,7 @@ typedef struct {
 #define YYSTYPE_IS_DECLARED
 
 %}
+
 
 %union {
     char* strval;
@@ -120,7 +131,8 @@ case_item : CASE expression COLON statement_list
          
 ternary_expression : expression QUESTION_MARK expression COLON expression SEMICOLON { printf("Ternary expression.\n"); }
                    | expression QUESTION_MARK LBRACE expression RBRACE COLON LBRACE expression RBRACE { printf("Ternary expression.\n"); }
-expression_statement : expression SEMICOLON { printf("Expression statement.\n"); };
+expression_statement : expression SEMICOLON { printf("Expression statement.\n"); }
+|expression;
                      
 
 declaration_statement : var_declarations SEMICOLON 
@@ -283,6 +295,8 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
 
             ;
 
+
+
 modifier : STATIC { printf("Static modifier.\n"); }
 | PUBLIC { printf("Public modifier.\n"); }
 | PRIVATE { printf("Private modifier.\n"); }
@@ -320,23 +334,72 @@ bool_values:TRUE_VALUE | FALSE_VALUE;
 
 
 expression : primary_expression
-           | expression PLUS expression 
-           | expression MINUS expression
-           | expression MULTIPLY expression
-           | expression DIVIDE expression
-           | expression PLUS ASSIGN expression
-           | expression MINUS ASSIGN expression
-           | expression MULTIPLY ASSIGN expression
-           | expression DIVIDE ASSIGN expression
-           | expression MODULO expression
-           | expression LESS_THAN expression
-           | expression LESS_EQUAL expression
-           | expression GREATER_THAN expression
-           | expression GREATER_EQUAL expression
-           | expression EQUALS expression
+           | primary_expression PLUS primary_expression {
+            check_type_mismatch($1,$3);
+           };
+           | primary_expression MINUS primary_expression{ check_type_mismatch($1,$3);}
+           | primary_expression MULTIPLY primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression DIVIDE primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression PLUS ASSIGN primary_expression{
+            check_type_mismatch($1,$4);
+
+            }
+           | primary_expression MINUS ASSIGN primary_expression{
+            check_type_mismatch($1,$4);
+
+            }
+           | primary_expression MULTIPLY ASSIGN primary_expression{
+            check_type_mismatch($1,$4);
+
+            }
+           | primary_expression DIVIDE ASSIGN primary_expression{
+            check_type_mismatch($1,$4);
+
+            }
+           | primary_expression MODULO primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression LESS_THAN primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression LESS_EQUAL primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression GREATER_THAN primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression GREATER_EQUAL primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression EQUALS primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
            | expression COMMA expression
-           | expression ASSIGN expression 
-           | expression NOT_EQUALS expression
+           | primary_expression ASSIGN primary_expression {
+                                       char *identifier = $3;
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count);
+                      if (token == -1) { 
+                          yyerror("Identifier has not be declared\n");
+                      }
+            check_type_mismatch($1,$3);
+
+            }
+           | primary_expression NOT_EQUALS primary_expression{
+            check_type_mismatch($1,$3);
+
+            }
            | expression AND expression
            | expression OR expression
            | expression LSBRACE expression RSBRACE
@@ -351,6 +414,7 @@ expression : primary_expression
            ;
 
 primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
+$$=$1;
            char *identifier = $1;
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
                       if (token == -1) {
@@ -358,8 +422,17 @@ primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
  }
-                   | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); }
-                   | NUMBER { printf("Primary expression (number): %s\n", $1); }
+                   | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); 
+$$=$1;
+                   }
+                   | NUMBER { printf("Primary expression (number): %s\n", $1); 
+                   char *identifier = $1;
+          
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      
+$$=$1;
+                   }
                    | bool_values { printf("Primary expression (boolean)\n"); }
 
 %%

@@ -15,6 +15,7 @@ struct symbol_entry {
     int scope; // Added scope field
     int scope_id;
 
+
 };
 
 struct symbol_entry symbol_table[100];
@@ -157,7 +158,7 @@ return false;
 "false"             { return FALSE_VALUE; }
 
 
-[0-9]+|[0-9]+\.[0-9]+             { yylval.strval = strdup(yytext); return NUMBER; }
+[0-9]+|[0-9]+\.[0-9]+             { yylval.strval = strdup(yytext);  strcpy(symbol_table[symbol_count].data_type, "int"); return NUMBER; }
 
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.strval = strdup(yytext);
                           int index = search_symbol_table(yytext,-1,-1);
@@ -168,7 +169,7 @@ return false;
                               return ID;
                           }
                         }
-(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext); return STRING_LITERAL; }
+(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext);  strcpy(symbol_table[symbol_count].data_type, "string");  return STRING_LITERAL; }
 
 
 \/\/[^\n]*           { /* Ignore single-line comments */ }

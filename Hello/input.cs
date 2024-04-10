@@ -9,6 +9,10 @@ class Program
         // Declare and initialize the two numbers
         int num1 = 10;
         
+        string hi = "i";
+
+        int menu="michael";
+
         while(num1 > 20){
 
         // int num1;
@@ -16,13 +20,18 @@ class Program
             
             Console.WriteLine($"num1 {num1} > num2 {num2}");
 
-            num2=num2 +1;
+            // num2=num2 - "d;klasjfk";
+
         }
     
         int day = 1;
-        string daadfy="wediend";
-        int summmm;
+        int daadfy;
+        
+
+
+        int summmm=4;
         summmm=daadfy;
+        // int day2=day + summmm;
 
         switch (day)
         {
@@ -59,6 +68,7 @@ class Program
 
     int fun(int z){
         int num1 = 10;
+
       return num1>z ? 1 : 0;
     }
 
