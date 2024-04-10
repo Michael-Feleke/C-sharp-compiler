@@ -14,6 +14,7 @@ struct symbol_entry {
     int line_num;
     int scope; // Added scope field
     int scope_id;
+
 };
 
 struct symbol_entry symbol_table[100];

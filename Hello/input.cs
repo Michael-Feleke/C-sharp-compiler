@@ -2,7 +2,7 @@ using System;
 
 class Program
 {
-
+    // int num1;
 
     static void Main(string[] args)
     {
@@ -47,11 +47,19 @@ class Program
 
         // Print the sum
         Console.WriteLine($"The sum of {num1} and {num2} is: {sum}");
+
+        if (num1)
+        {
+            int x=9;
+        }
+        else {
+            int x=9;
+        }
     }
 
-    int fun(int x){
+    int fun(int z){
         int num1 = 10;
-      return num1>x ? 1 : 0;
+      return num1>z ? 1 : 0;
     }
 
 }
