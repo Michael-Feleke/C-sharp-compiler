@@ -21,12 +21,27 @@ void yyerror(const char *s);
 
 void check_type_mismatch(char* type1, char * type2 ){
     if(strcmp(get_data_type(type1),get_data_type(type2))!=0){
-        if(strcmp(get_data_type(type2),"UNKNOWN")==0){
-            yyerror("identifier do not declared");
+        
 
-        }
-          else  yyerror("Operands has not same data type");
+
+            yyerror("Operands has not same data type");
            }
+}
+void check_type_mismatches(char* type1, char * type2, char * type3 ){
+    
+    if(strcmp(get_data_type(type1),get_data_type(type2))!=0){
+ 
+            yyerror("Operands has not same data type");
+           }
+    if(strcmp(get_data_type(type2),get_data_type(type3))!=0){
+ 
+            yyerror("Operands has not same data type");
+           }
+    if(strcmp(get_data_type(type1),get_data_type(type3))!=0){
+ 
+            yyerror("Operands has not same data type");
+           }
+    
 }
 
 typedef struct {
@@ -171,6 +186,8 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       if(!check_constant_type_For_Number($2)){
                         yyerror("Semantic error: oprades are in different type can not be assigned\n");
                       }
+                      };
+                    | type ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                       };
                     | type ID ASSIGN bool_values{ printf("Declaration statement with assignment.\n");
                       char *identifier = $2;
@@ -388,12 +405,12 @@ expression : primary_expression
             }
            | expression COMMA expression
            | primary_expression ASSIGN primary_expression {
-                                       char *identifier = $3;
-                      int token = search_symbol_table(identifier,scope_count,scope_id_count);
-                      if (token == -1) { 
-                          yyerror("Identifier has not be declared\n");
-                      }
             check_type_mismatch($1,$3);
+
+            }
+           | primary_expression ASSIGN primary_expression OPERATORS primary_expression {
+
+            check_type_mismatches($1,$3,$5);
 
             }
            | primary_expression NOT_EQUALS primary_expression{
@@ -412,6 +429,8 @@ expression : primary_expression
            | expression DOT expression LPAREN console_list RPAREN
            | LBRACE array_list RBRACE { printf("Array list.\n"); }
            ;
+
+OPERATORS:PLUS | MINUS | MULTIPLY |DIVIDE;
 
 primary_expression : ID { printf("Primary expression (identifier): %s\n", $1);
 $$=$1;

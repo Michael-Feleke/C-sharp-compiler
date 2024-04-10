@@ -169,7 +169,7 @@ return false;
                               return ID;
                           }
                         }
-(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext);  strcpy(symbol_table[symbol_count].data_type, "string");  return STRING_LITERAL; }
+(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext);    return STRING_LITERAL; }
 
 
 \/\/[^\n]*           { /* Ignore single-line comments */ }

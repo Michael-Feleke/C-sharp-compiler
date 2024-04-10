@@ -11,7 +11,8 @@ class Program
         
         string hi = "i";
 
-        int menu="michael";
+        // string menu = "michael";
+           num4 = num1 + num1;
 
         while(num1 > 20){
 
@@ -20,7 +21,7 @@ class Program
             
             Console.WriteLine($"num1 {num1} > num2 {num2}");
 
-            // num2=num2 - "d;klasjfk";
+            num2=num2 + num1;
 
         }
     
