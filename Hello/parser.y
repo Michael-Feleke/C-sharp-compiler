@@ -349,7 +349,6 @@ console_list:expression
 
 bool_values:TRUE_VALUE | FALSE_VALUE;
 
-
 expression : primary_expression
            | primary_expression PLUS primary_expression {
             check_type_mismatch($1,$3);

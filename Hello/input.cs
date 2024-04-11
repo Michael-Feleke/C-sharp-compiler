@@ -3,7 +3,6 @@ using System;
 class Program
 {
     // int num1;
-
     static void Main(string[] args)
     {
         // Declare and initialize the two numbers
@@ -11,8 +10,9 @@ class Program
         
         string hi = "i";
 
-        // string menu = "michael";
-           num4 = num1 + num1;
+        string menu = "michael";
+
+        
 
         while(num1 > 20){
 
