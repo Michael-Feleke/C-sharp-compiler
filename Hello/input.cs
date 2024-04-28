@@ -27,6 +27,8 @@ class Program
     
         int day = 1;
         int daadfy;
+
+        int tsegaye="tsegaye";
         
         
 
@@ -71,12 +73,16 @@ class Program
     int fun(int z){
         int num1 = 10;
         
+        
 
       return num1>z ? 1 : 0;
     }
+    int num1;
 
-    void fun(int x){
+    int funfasd(int x){
+
         return 0;
+
     }
 
 }

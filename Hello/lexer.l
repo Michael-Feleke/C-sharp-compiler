@@ -32,13 +32,16 @@ void add_to_symbol_table(char *name, int token,int line_number) {
     symbol_count++;
 }
 
-int search_symbol_table(char *name, int scope, int scope_id) {
+int search_symbol_table(char *name, int scope, int scope_id,int func_id) {
     for (int i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope < scope){
 
             return symbol_table[i].token_type;
         }
         else if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope && symbol_table[i].scope_id == scope_id) {
+            return symbol_table[i].token_type;
+        }
+        else if (strcmp(symbol_table[i].name, name) == 0 && symbol_table[i].scope == scope && func_id==1) {
             return symbol_table[i].token_type;
         }
     }
@@ -161,7 +164,7 @@ return false;
 [0-9]+|[0-9]+\.[0-9]+             { yylval.strval = strdup(yytext);  strcpy(symbol_table[symbol_count].data_type, "int"); return NUMBER; }
 
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.strval = strdup(yytext);
-                          int index = search_symbol_table(yytext,-1,-1);
+                          int index = search_symbol_table(yytext,-1,-1,0);
                           if (index == -1) {
                               return ID;
                           }
