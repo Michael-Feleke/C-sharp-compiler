@@ -7,30 +7,41 @@ class Program
     static void Main(string[] args)
     {
         int num1 = 10;
+        // initialize
+        // int u = "c"; 
+
+        // declare then assign
+        // int c;
+        // c= "letter c";
         
-        string hi = "i";
-
-        string menu = "michael";
-        string y = 3;
-        // double aldkj="lfjk";
-
+        string hi = "hi";
+        // string name;
+        // name=5;
         
-        if(menu=="michael"){
-            int menu12=9;
-            }
+        string book = "book1";
+        
+        // int total = num1 + hi;
+
+        // int total;
+        // total=num1+hi;
 
 
-        while(num1 > 20){
+        // string concatination = num1 + hi;
+        
+        // string concatination;
+        // concatination=num1+hi;
+    
 
-        // int num1;
+        while(num1 > 20){  
             int num2 = 20;
+            // int num2;
+            // int num2 = 50;
             
-        
             num2=num2 + num1;
 
         }
     
-        int day = 1;
+        int num3 = num4;
 
         string summmm=4;
       

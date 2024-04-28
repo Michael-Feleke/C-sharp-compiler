@@ -1121,7 +1121,7 @@ YY_RULE_SETUP
 case 52:
 YY_RULE_SETUP
 #line 172 "lexer.l"
-{ yylval.strval = strdup(yytext);strcpy(symbol_table[symbol_count].data_type, "string");     return STRING_LITERAL; }
+{ yylval.strval = strdup(yytext);     return STRING_LITERAL; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
