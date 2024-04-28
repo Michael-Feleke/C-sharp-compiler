@@ -458,6 +458,10 @@ $$=$1;
                       } 
  }
                    | STRING_LITERAL { printf("Primary expression (string literal): %s\n", $1); 
+                           char *identifier = $1;
+          
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
 $$=$1;
                    }
                    | NUMBER { printf("Primary expression (number): %s\n", $1); 

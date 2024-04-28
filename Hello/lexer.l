@@ -64,7 +64,6 @@ char* get_data_type(char* token_name) {
     for (int i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_table[i].name, token_name) == 0) {
             if (strlen(symbol_table[i].data_type) > 0) {
-
                 return symbol_table[i].data_type;
             } else {
                 return "UNKNOWN";
@@ -85,8 +84,6 @@ return false;
  
 }
 bool check_constant_type_For_Number(char *name){
-
-
   if(strcmp(get_data_type(name),"int")==0 || strcmp(get_data_type(name),"double")==0){
 
     return true;
@@ -172,7 +169,7 @@ return false;
                               return ID;
                           }
                         }
-(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext);    return STRING_LITERAL; }
+(\"|\')[^\"]*(\"|\') { yylval.strval = strdup(yytext);strcpy(symbol_table[symbol_count].data_type, "string");     return STRING_LITERAL; }
 
 
 \/\/[^\n]*           { /* Ignore single-line comments */ }

@@ -593,7 +593,7 @@ static const yytype_uint16 yyrline[] =
      374,   378,   382,   386,   390,   394,   398,   402,   406,   410,
      414,   418,   422,   423,   427,   432,   436,   437,   438,   439,
      440,   441,   442,   443,   444,   445,   446,   449,   449,   449,
-     449,   451,   460,   463,   471
+     449,   451,   460,   467,   475
 };
 #endif
 
@@ -2504,6 +2504,10 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 460 "parser.y"
     { printf("Primary expression (string literal): %s\n", (yyvsp[(1) - (1)].strval)); 
+                           char *identifier = (yyvsp[(1) - (1)].strval);
+          
+                          add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
 (yyval.strval)=(yyvsp[(1) - (1)].strval);
                    ;}
     break;
@@ -2511,7 +2515,7 @@ yyreduce:
   case 123:
 
 /* Line 1455 of yacc.c  */
-#line 463 "parser.y"
+#line 467 "parser.y"
     { printf("Primary expression (number): %s\n", (yyvsp[(1) - (1)].strval)); 
                    char *identifier = (yyvsp[(1) - (1)].strval);
           
@@ -2525,14 +2529,14 @@ yyreduce:
   case 124:
 
 /* Line 1455 of yacc.c  */
-#line 471 "parser.y"
+#line 475 "parser.y"
     { printf("Primary expression (boolean)\n"); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2536 "parser.tab.c"
+#line 2540 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2744,7 +2748,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 473 "parser.y"
+#line 477 "parser.y"
 
 
 void yyerror(const char *s) {
