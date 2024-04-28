@@ -40,8 +40,9 @@ class Program
             num2=num2 + num1;
 
         }
-    
-        int num3 = num4;
+        
+        int num2=5;
+        int num4= num3;
 
         string summmm=4;
       
