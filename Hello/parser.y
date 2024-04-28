@@ -5,6 +5,7 @@
 #include <stdbool.h>
 extern int search_symbol_table(char *name, int scope, int scope_id,int func_id);
 extern void add_to_symbol_table(char *name, int type,int line_number,int scope,int scope_id);
+extern void addValue(int numValue);
 extern char* get_data_type(char *token_name);
 extern bool check_constant_type_For_String(char *name);
 extern bool check_constant_type_For_Number(char *name);
@@ -175,6 +176,7 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       };
                     | type ID ASSIGN NUMBER{ printf("Declaration statement with assignment.\n");
                       char *identifier = $2;
+                      int value = atoi($4); 
                       int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
@@ -182,6 +184,7 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
+                          addValue(value);
                       }
                       if(!check_constant_type_For_Number($2)){
                         yyerror("Semantic error: operands are in different type can not be assigned\n");
@@ -189,6 +192,7 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       };
                                           | type ID ASSIGN primary_expression{ printf("Declaration statement with assignment.\n");
                     char *identifier = $4;
+                    int value = atoi($4);
 
                       int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
                       if (token == -1) {
@@ -200,6 +204,7 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                       if (token == -1) {
                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier2, ID);
                           add_to_symbol_table(identifier2, ID,yylineno,scope_count,scope_id_count); 
+                          addValue(value);
                     }
                       else{
                              printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
@@ -392,6 +397,7 @@ bool_values:TRUE_VALUE | FALSE_VALUE;
 expression : primary_expression
            | primary_expression PLUS primary_expression {
             char *identifier = $3;
+            
 
                       int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
                       if (token == -1) {
@@ -725,6 +731,7 @@ expression : primary_expression
            | expression COMMA expression
            | primary_expression ASSIGN primary_expression {
             char *identifier = $3;
+        
 
                       int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
                       if (token == -1) {
@@ -739,6 +746,7 @@ expression : primary_expression
                           yyerror("Identifier wasn't declared");
                     }
                       else{
+
                            check_type_mismatch($1,$3);
               
                       }

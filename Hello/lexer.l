@@ -14,6 +14,7 @@ struct symbol_entry {
     int line_num;
     int scope; // Added scope field
     int scope_id;
+    int numValue;
 
 
 };
@@ -30,6 +31,11 @@ void add_to_symbol_table(char *name, int token,int line_number) {
     symbol_table[symbol_count].scope = scope_count; // Set scope
     symbol_table[symbol_count].scope_id = scope_id_count;
     symbol_count++;
+    
+}
+
+void addValue (int numValue){
+    symbol_table[symbol_count-1].numValue = numValue;
 }
 
 int search_symbol_table(char *name, int scope, int scope_id,int func_id) {
@@ -52,10 +58,10 @@ int search_symbol_table(char *name, int scope, int scope_id,int func_id) {
 void displaySymbolTable() {
     printf("Symbol Table:\n");
     printf("----------------------------------------------------------------------------------------\n");
-    printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s |\n", "Name", "Data Type", "Token Type","Line Number", "Scope", "Scope ID"); // Added Scope
+    printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s | %-10s | \n", "Name", "Data Type", "Token Type","Line Number", "Scope", "Scope ID", "value"); // Added Scope
     printf("----------------------------------------------------------------------------------------\n");
     for (int i = 0; i < symbol_count; i++) {
-        printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope, symbol_table[i].scope_id); // Print scope
+        printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |  %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope, symbol_table[i].scope_id,symbol_table[i].numValue); // Print scope
     }
     printf("----------------------------------------------------------------------------------------\n");
 }

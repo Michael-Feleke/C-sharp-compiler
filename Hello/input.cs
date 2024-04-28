@@ -7,10 +7,10 @@ class Program
     static void Main(string[] args)
     {
         int num1 = 10;
-        // initialize
+        int mm=20;
+        int yy= num1;
         // int u = "c"; 
 
-        // declare then assign
         // int c;
         // c= "letter c";
         
@@ -47,24 +47,6 @@ class Program
         // int num4= num3;
 
       
-
-        switch (day)
-        {
-            case 1:
-             Console.WriteLine("1day");
-             break;
-            case 2:
-             Console.WriteLine("2day");
-             break;
-            case 3:
-             Console.WriteLine("3day");
-             break;
-            
-            default:
-                         Console.WriteLine("1-3");
-                         break;
-
-        }       
         
 
         string university= "BDU";
@@ -78,6 +60,7 @@ class Program
             int x=10;
 
         }
+       
     }
 
 
