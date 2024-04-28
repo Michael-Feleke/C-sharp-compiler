@@ -57,13 +57,13 @@ int search_symbol_table(char *name, int scope, int scope_id,int func_id) {
 
 void displaySymbolTable() {
     printf("Symbol Table:\n");
-    printf("----------------------------------------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------------------------------------------\n");
     printf("%-20s | %-15s | %-10s | %-10s | %-10s | %-10s | %-10s | \n", "Name", "Data Type", "Token Type","Line Number", "Scope", "Scope ID", "value"); // Added Scope
-    printf("----------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------\n");
     for (int i = 0; i < symbol_count; i++) {
         printf("%-20s | %-15s | %-10d | %-10d | %-10d | %-10d |  %-10d |\n", symbol_table[i].name, symbol_table[i].data_type, symbol_table[i].token_type, symbol_table[i].line_num, symbol_table[i].scope, symbol_table[i].scope_id,symbol_table[i].numValue); // Print scope
     }
-    printf("----------------------------------------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------------------------------------------\n");
 }
 
 char* get_data_type(char* token_name) {
@@ -78,6 +78,17 @@ char* get_data_type(char* token_name) {
     }
     return "UNKNOWN";
 }
+
+int get_value(char* token_name) {
+    for (int i = 0; i < symbol_count; i++) {
+        if (strcmp(symbol_table[i].name, token_name) == 0) {
+            return symbol_table[i].numValue;
+        }
+    }
+    // Return a default value or handle error case
+    return -1; // Default value (you can adjust this as needed)
+}
+
 
 bool check_constant_type_For_String(char *name){
 
