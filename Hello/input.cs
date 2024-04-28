@@ -70,8 +70,13 @@ class Program
 
     int fun(int z){
         int num1 = 10;
+        
 
       return num1>z ? 1 : 0;
+    }
+
+    void fun(int x){
+        return 0;
     }
 
 }

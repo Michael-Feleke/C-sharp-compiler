@@ -280,6 +280,10 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             }
             | modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE {
                            char *identifier = $3;
@@ -288,6 +292,10 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                      else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             }
             | type ID LPAREN RPAREN LBRACE func_body RBRACE
             {
@@ -298,6 +306,10 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             }
             |type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE
             {
@@ -308,6 +320,10 @@ function_declarations : modifier type ID LPAREN RPAREN LBRACE func_body RBRACE
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             }
 
             ;

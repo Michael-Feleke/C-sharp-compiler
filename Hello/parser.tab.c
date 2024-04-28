@@ -587,13 +587,13 @@ static const yytype_uint16 yyrline[] =
      129,   130,   131,   132,   136,   139,   140,   143,   144,   147,
      148,   149,   150,   153,   154,   155,   157,   158,   176,   190,
      192,   203,   217,   231,   248,   249,   250,   251,   252,   255,
-     259,   259,   265,   270,   271,   274,   284,   292,   302,   317,
-     318,   319,   320,   321,   322,   323,   330,   338,   339,   342,
-     343,   345,   346,   347,   348,   350,   350,   353,   354,   357,
-     358,   362,   366,   370,   374,   378,   382,   386,   390,   394,
-     398,   402,   406,   407,   411,   416,   420,   421,   422,   423,
-     424,   425,   426,   427,   428,   429,   430,   433,   433,   433,
-     433,   435,   444,   447,   455
+     259,   259,   265,   270,   271,   274,   288,   300,   314,   333,
+     334,   335,   336,   337,   338,   339,   346,   354,   355,   358,
+     359,   361,   362,   363,   364,   366,   366,   368,   369,   372,
+     373,   377,   381,   385,   389,   393,   397,   401,   405,   409,
+     413,   417,   421,   422,   426,   431,   435,   436,   437,   438,
+     439,   440,   441,   442,   443,   444,   445,   448,   448,   448,
+     448,   450,   459,   462,   470
 };
 #endif
 
@@ -2171,13 +2171,17 @@ yyreduce:
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             ;}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 284 "parser.y"
+#line 288 "parser.y"
     {
                            char *identifier = (yyvsp[(3) - (9)].strval);
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
@@ -2185,13 +2189,17 @@ yyreduce:
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                      else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             ;}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 293 "parser.y"
+#line 301 "parser.y"
     {
                 printf("Parsed function declaration: %s\n", (yyvsp[(2) - (7)].strval));
                            char *identifier = (yyvsp[(2) - (7)].strval);
@@ -2200,13 +2208,17 @@ yyreduce:
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             ;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 303 "parser.y"
+#line 315 "parser.y"
     {
                 printf("Parsed function declaration: %s\n", (yyvsp[(2) - (8)].strval));
                            char *identifier = (yyvsp[(2) - (8)].strval);
@@ -2215,48 +2227,52 @@ yyreduce:
                           add_to_symbol_table(identifier, ID,yylineno,scope_count,scope_id_count); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
+                                  else{
+                                                 printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier already declared");
+                      }
             ;}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 317 "parser.y"
+#line 333 "parser.y"
     { printf("Static modifier.\n"); ;}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 318 "parser.y"
+#line 334 "parser.y"
     { printf("Public modifier.\n"); ;}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 319 "parser.y"
+#line 335 "parser.y"
     { printf("Private modifier.\n"); ;}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 320 "parser.y"
+#line 336 "parser.y"
     { printf("Protected modifier.\n"); ;}
     break;
 
   case 74:
 
 /* Line 1455 of yacc.c  */
-#line 322 "parser.y"
+#line 338 "parser.y"
     { printf("Parameter list.\n"); ;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 323 "parser.y"
+#line 339 "parser.y"
     { printf("Parameter.\n");
                            char *identifier = (yyvsp[(2) - (2)].strval);
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
@@ -2269,7 +2285,7 @@ yyreduce:
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 330 "parser.y"
+#line 346 "parser.y"
     { printf("Parameter.\n"); 
                            char *identifier = (yyvsp[(4) - (4)].strval);
                       int token = search_symbol_table(identifier,scope_count,scope_id_count);
@@ -2282,21 +2298,21 @@ yyreduce:
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 346 "parser.y"
+#line 362 "parser.y"
     { printf("Console list.\n"); ;}
     break;
 
   case 83:
 
 /* Line 1455 of yacc.c  */
-#line 347 "parser.y"
+#line 363 "parser.y"
     { printf("console list.\n"); ;}
     break;
 
   case 88:
 
 /* Line 1455 of yacc.c  */
-#line 354 "parser.y"
+#line 369 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
            ;}
@@ -2305,14 +2321,14 @@ yyreduce:
   case 89:
 
 /* Line 1455 of yacc.c  */
-#line 357 "parser.y"
+#line 372 "parser.y"
     { check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));;}
     break;
 
   case 90:
 
 /* Line 1455 of yacc.c  */
-#line 358 "parser.y"
+#line 373 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2322,7 +2338,7 @@ yyreduce:
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 362 "parser.y"
+#line 377 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2332,7 +2348,7 @@ yyreduce:
   case 92:
 
 /* Line 1455 of yacc.c  */
-#line 366 "parser.y"
+#line 381 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
 
@@ -2342,7 +2358,7 @@ yyreduce:
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 370 "parser.y"
+#line 385 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
 
@@ -2352,7 +2368,7 @@ yyreduce:
   case 94:
 
 /* Line 1455 of yacc.c  */
-#line 374 "parser.y"
+#line 389 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
 
@@ -2362,7 +2378,7 @@ yyreduce:
   case 95:
 
 /* Line 1455 of yacc.c  */
-#line 378 "parser.y"
+#line 393 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
 
@@ -2372,7 +2388,7 @@ yyreduce:
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 382 "parser.y"
+#line 397 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2382,7 +2398,7 @@ yyreduce:
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 386 "parser.y"
+#line 401 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2392,7 +2408,7 @@ yyreduce:
   case 98:
 
 /* Line 1455 of yacc.c  */
-#line 390 "parser.y"
+#line 405 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2402,7 +2418,7 @@ yyreduce:
   case 99:
 
 /* Line 1455 of yacc.c  */
-#line 394 "parser.y"
+#line 409 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2412,7 +2428,7 @@ yyreduce:
   case 100:
 
 /* Line 1455 of yacc.c  */
-#line 398 "parser.y"
+#line 413 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2422,7 +2438,7 @@ yyreduce:
   case 101:
 
 /* Line 1455 of yacc.c  */
-#line 402 "parser.y"
+#line 417 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2432,7 +2448,7 @@ yyreduce:
   case 103:
 
 /* Line 1455 of yacc.c  */
-#line 407 "parser.y"
+#line 422 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2442,7 +2458,7 @@ yyreduce:
   case 104:
 
 /* Line 1455 of yacc.c  */
-#line 411 "parser.y"
+#line 426 "parser.y"
     {
 
             check_type_mismatches((yyvsp[(1) - (5)].strval),(yyvsp[(3) - (5)].strval),(yyvsp[(5) - (5)].strval));
@@ -2453,7 +2469,7 @@ yyreduce:
   case 105:
 
 /* Line 1455 of yacc.c  */
-#line 416 "parser.y"
+#line 431 "parser.y"
     {
             check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
 
@@ -2463,14 +2479,14 @@ yyreduce:
   case 116:
 
 /* Line 1455 of yacc.c  */
-#line 430 "parser.y"
+#line 445 "parser.y"
     { printf("Array list.\n"); ;}
     break;
 
   case 121:
 
 /* Line 1455 of yacc.c  */
-#line 435 "parser.y"
+#line 450 "parser.y"
     { printf("Primary expression (identifier): %s\n", (yyvsp[(1) - (1)].strval));
 (yyval.strval)=(yyvsp[(1) - (1)].strval);
            char *identifier = (yyvsp[(1) - (1)].strval);
@@ -2485,7 +2501,7 @@ yyreduce:
   case 122:
 
 /* Line 1455 of yacc.c  */
-#line 444 "parser.y"
+#line 459 "parser.y"
     { printf("Primary expression (string literal): %s\n", (yyvsp[(1) - (1)].strval)); 
 (yyval.strval)=(yyvsp[(1) - (1)].strval);
                    ;}
@@ -2494,7 +2510,7 @@ yyreduce:
   case 123:
 
 /* Line 1455 of yacc.c  */
-#line 447 "parser.y"
+#line 462 "parser.y"
     { printf("Primary expression (number): %s\n", (yyvsp[(1) - (1)].strval)); 
                    char *identifier = (yyvsp[(1) - (1)].strval);
           
@@ -2508,14 +2524,14 @@ yyreduce:
   case 124:
 
 /* Line 1455 of yacc.c  */
-#line 455 "parser.y"
+#line 470 "parser.y"
     { printf("Primary expression (boolean)\n"); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2519 "parser.tab.c"
+#line 2535 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2727,7 +2743,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 457 "parser.y"
+#line 472 "parser.y"
 
 
 void yyerror(const char *s) {
