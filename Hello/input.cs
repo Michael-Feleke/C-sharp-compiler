@@ -92,13 +92,11 @@ class Program
     // }
 
     void returner(int x){
-
+        int num1=20;
         int score=0;
         string scorer="Michael";
         Console.WriteLine("Checking...");
 
     }
-
-    
 
 }
