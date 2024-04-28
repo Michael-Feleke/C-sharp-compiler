@@ -28,7 +28,7 @@ class Program
         int day = 1;
         int daadfy;
 
-        int tsegaye="tsegaye";
+        
         
         
 
@@ -84,5 +84,7 @@ class Program
         return 0;
 
     }
+
+    int num2= fun + num1;
 
 }
