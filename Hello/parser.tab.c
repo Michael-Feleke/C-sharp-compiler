@@ -591,10 +591,10 @@ static const yytype_uint16 yyrline[] =
      278,   282,   282,   288,   293,   294,   297,   311,   323,   337,
      357,   358,   359,   360,   361,   362,   363,   370,   378,   379,
      382,   383,   385,   386,   387,   388,   390,   390,   392,   393,
-     396,   397,   401,   405,   409,   413,   417,   421,   425,   429,
-     433,   437,   441,   445,   446,   470,   475,   479,   480,   481,
-     482,   483,   484,   485,   486,   487,   488,   489,   492,   492,
-     492,   492,   494,   503,   510,   518
+     416,   437,   461,   485,   509,   533,   557,   581,   605,   629,
+     653,   677,   701,   725,   726,   750,   755,   779,   780,   781,
+     782,   783,   784,   785,   786,   787,   788,   789,   792,   792,
+     792,   792,   794,   803,   810,   818
 };
 #endif
 
@@ -2351,141 +2351,61 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 393 "parser.y"
     {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
            ;}
     break;
 
   case 90:
 
 /* Line 1455 of yacc.c  */
-#line 396 "parser.y"
-    { check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));;}
+#line 416 "parser.y"
+    { char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      };}
     break;
 
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 397 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 92:
-
-/* Line 1455 of yacc.c  */
-#line 401 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 93:
-
-/* Line 1455 of yacc.c  */
-#line 405 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
-
-            ;}
-    break;
-
-  case 94:
-
-/* Line 1455 of yacc.c  */
-#line 409 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
-
-            ;}
-    break;
-
-  case 95:
-
-/* Line 1455 of yacc.c  */
-#line 413 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
-
-            ;}
-    break;
-
-  case 96:
-
-/* Line 1455 of yacc.c  */
-#line 417 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
-
-            ;}
-    break;
-
-  case 97:
-
-/* Line 1455 of yacc.c  */
-#line 421 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 98:
-
-/* Line 1455 of yacc.c  */
-#line 425 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 99:
-
-/* Line 1455 of yacc.c  */
-#line 429 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 100:
-
-/* Line 1455 of yacc.c  */
-#line 433 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 101:
-
-/* Line 1455 of yacc.c  */
 #line 437 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 102:
-
-/* Line 1455 of yacc.c  */
-#line 441 "parser.y"
-    {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
-
-            ;}
-    break;
-
-  case 104:
-
-/* Line 1455 of yacc.c  */
-#line 446 "parser.y"
     {
             char *identifier = (yyvsp[(3) - (3)].strval);
 
@@ -2497,13 +2417,373 @@ yyreduce:
                     char *identifier2 = (yyvsp[(1) - (3)].strval);
                      int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
                       if (token == -1) {
-                         printf("Identifier '%s' added to symbol table with token type %d.\n", identifier2, ID);
-                           
-                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
                     }
                       else{
-                             printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 92:
+
+/* Line 1455 of yacc.c  */
+#line 461 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 93:
+
+/* Line 1455 of yacc.c  */
+#line 485 "parser.y"
+    {
+            char *identifier = (yyvsp[(4) - (4)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (4)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 94:
+
+/* Line 1455 of yacc.c  */
+#line 509 "parser.y"
+    {
+             char *identifier = (yyvsp[(4) - (4)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (4)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 95:
+
+/* Line 1455 of yacc.c  */
+#line 533 "parser.y"
+    {
+             char *identifier = (yyvsp[(4) - (4)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (4)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 96:
+
+/* Line 1455 of yacc.c  */
+#line 557 "parser.y"
+    {
+             char *identifier = (yyvsp[(4) - (4)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (4)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (4)].strval),(yyvsp[(4) - (4)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 97:
+
+/* Line 1455 of yacc.c  */
+#line 581 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 98:
+
+/* Line 1455 of yacc.c  */
+#line 605 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 99:
+
+/* Line 1455 of yacc.c  */
+#line 629 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 100:
+
+/* Line 1455 of yacc.c  */
+#line 653 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 101:
+
+/* Line 1455 of yacc.c  */
+#line 677 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 102:
+
+/* Line 1455 of yacc.c  */
+#line 701 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
+
+            ;}
+    break;
+
+  case 104:
+
+/* Line 1455 of yacc.c  */
+#line 726 "parser.y"
+    {
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
                       }
 
                          
@@ -2515,7 +2795,7 @@ yyreduce:
   case 105:
 
 /* Line 1455 of yacc.c  */
-#line 470 "parser.y"
+#line 750 "parser.y"
     {
 
             check_type_mismatches((yyvsp[(1) - (5)].strval),(yyvsp[(3) - (5)].strval),(yyvsp[(5) - (5)].strval));
@@ -2526,9 +2806,29 @@ yyreduce:
   case 106:
 
 /* Line 1455 of yacc.c  */
-#line 475 "parser.y"
+#line 755 "parser.y"
     {
-            check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+            char *identifier = (yyvsp[(3) - (3)].strval);
+
+                      int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identifier2 = (yyvsp[(1) - (3)].strval);
+                     int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         
+                               printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                    }
+                      else{
+                           check_type_mismatch((yyvsp[(1) - (3)].strval),(yyvsp[(3) - (3)].strval));
+              
+                      }
+
+                         
+                      }
 
             ;}
     break;
@@ -2536,14 +2836,14 @@ yyreduce:
   case 117:
 
 /* Line 1455 of yacc.c  */
-#line 489 "parser.y"
+#line 789 "parser.y"
     { printf("Array list.\n"); ;}
     break;
 
   case 122:
 
 /* Line 1455 of yacc.c  */
-#line 494 "parser.y"
+#line 794 "parser.y"
     { printf("Primary expression (identifier): %s\n", (yyvsp[(1) - (1)].strval));
 (yyval.strval)=(yyvsp[(1) - (1)].strval);
         //    char *identifier = $1;
@@ -2558,7 +2858,7 @@ yyreduce:
   case 123:
 
 /* Line 1455 of yacc.c  */
-#line 503 "parser.y"
+#line 803 "parser.y"
     { printf("Primary expression (string literal): %s\n", (yyvsp[(1) - (1)].strval)); 
                            char *identifier = (yyvsp[(1) - (1)].strval);
           
@@ -2571,7 +2871,7 @@ yyreduce:
   case 124:
 
 /* Line 1455 of yacc.c  */
-#line 510 "parser.y"
+#line 810 "parser.y"
     { printf("Primary expression (number): %s\n", (yyvsp[(1) - (1)].strval)); 
                    char *identifier = (yyvsp[(1) - (1)].strval);
           
@@ -2585,14 +2885,14 @@ yyreduce:
   case 125:
 
 /* Line 1455 of yacc.c  */
-#line 518 "parser.y"
+#line 818 "parser.y"
     { printf("Primary expression (boolean)\n"); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2596 "parser.tab.c"
+#line 2896 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2804,7 +3104,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 520 "parser.y"
+#line 820 "parser.y"
 
 
 void yyerror(const char *s) {

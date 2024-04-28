@@ -40,11 +40,12 @@ class Program
             num2=num2 + num1;
 
         }
+        // num2=5;
         
-        int num2=5;
-        int num4= num3;
+       int num2=5;
+        int num4= num2;
+        // int num4= num3;
 
-        string summmm=4;
       
 
         switch (day)
@@ -64,36 +65,40 @@ class Program
                          break;
 
         }       
-        // Add the two numbers
-        string hello= "hello";
-        // int sum = num1 + hello;
+        
 
-        // Print the sum
+        string university= "BDU";
 
         if (num1)
         {
             int x=9;
         }
         else {
-            int x=9;
+            // x=10;
+            int x=10;
+
         }
     }
 
 
     int fun(int z){
         int num1 = 10;
-        
-        
-
       return num1>z ? 1 : 0;
     }
+    // int fun(int z){
+    //     int num1 = 10;
 
-    int funfasd(int x){
+    //   return num1>z ? 1 : 0;
+    // }
 
-        return 0;
+    void returner(int x){
+
+        int score=0;
+        string scorer="Michael";
+        Console.WriteLine("Checking...");
 
     }
-    // int num2= fun + num1;
 
+    
 
 }
