@@ -9,9 +9,12 @@ class Program
         int num1 = 10;
         int mm=2;
         string mx = "msx";
-        int yy;
-        yy=num1 / mm;
-        int xx = num1 + mx;
+        int yy=num1 / mm;
+        // int xx = num1 + mx;
+        int xx1 = num1 - mm;
+        int xx3 = num1 * mm;
+        int sss = num1 / mm;
+        // int xx5 = num1 / 0; // can't divide by zero
         // int u = "c"; 
 
         // int c;

@@ -215,6 +215,111 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
                          
                       }
                     };
+                    | type ID ASSIGN primary_expression DIVIDE primary_expression{ printf("Declaration statement with assignment.\n");
+                    char *identifier = $6;
+
+                    int val1 = get_value($4);
+                    int val2 = get_value($6);
+                    int val3;
+
+                    if(val2 == 0) {
+                        yyerror("can't divide by zero");
+                    } else {
+                        val3=val1/val2;
+                    }
+
+                    int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identf = $4;
+                    int token = search_symbol_table(identf,scope_count,scope_id_count,0);
+                     if(token == -1){
+                        printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identf, token);
+                          yyerror("Identifier wasn't declared");
+                    }else{   
+                        char *identifier2 = $2;
+                        int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         printf("Identifier '%s' added to symbol table with token type %d.\n", identifier2, ID);
+                          add_to_symbol_table(identifier2, ID,yylineno,scope_count,scope_id_count); 
+                          check_type_mismatch($4,$6);
+                          addValue(val3);
+                      } else{
+                             printf("Error: Identifier '%s' doesn't exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                      }}
+
+                         
+                      }
+                    };
+                    | type ID ASSIGN primary_expression MULTIPLY primary_expression{ printf("Declaration statement with assignment.\n");
+                    char *identifier = $6;
+
+                    int val1 = get_value($4);
+                    int val2 = get_value($6);
+                    int val3 = val1 * val2;
+
+                    int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identf = $4;
+                    int token = search_symbol_table(identf,scope_count,scope_id_count,0);
+                     if(token == -1){
+                        printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identf, token);
+                          yyerror("Identifier wasn't declared");
+                    }else{   
+                        char *identifier2 = $2;
+                        int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         printf("Identifier '%s' added to symbol table with token type %d.\n", identifier2, ID);
+                          add_to_symbol_table(identifier2, ID,yylineno,scope_count,scope_id_count); 
+                          check_type_mismatch($4,$6);
+                          addValue(val3);
+                      } else{
+                             printf("Error: Identifier '%s' doesn't exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                      }}
+
+                         
+                      }
+                    };
+                    | type ID ASSIGN primary_expression MINUS primary_expression{ printf("Declaration statement with assignment.\n");
+                    char *identifier = $6;
+
+                    int val1 = get_value($4);
+                    int val2 = get_value($6);
+                    int val3 = val1 - val2;
+
+                    int token = search_symbol_table(identifier,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                          printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identifier, token);
+                          yyerror("Identifier wasn't declared");
+                      } else {
+                    char *identf = $4;
+                    int token = search_symbol_table(identf,scope_count,scope_id_count,0);
+                     if(token == -1){
+                        printf("Error: Identifier '%s' donot exists in the symbol table with token type %d.\n", identf, token);
+                          yyerror("Identifier wasn't declared");
+                    }else{   
+                        char *identifier2 = $2;
+                        int token = search_symbol_table(identifier2,scope_count,scope_id_count,0);
+                      if (token == -1) {
+                         printf("Identifier '%s' added to symbol table with token type %d.\n", identifier2, ID);
+                          add_to_symbol_table(identifier2, ID,yylineno,scope_count,scope_id_count); 
+                          check_type_mismatch($4,$6);
+                          addValue(val3);
+                      } else{
+                             printf("Error: Identifier '%s' doesn't exists in the symbol table with token type %d.\n", identifier2, token);
+                          yyerror("Identifier wasn't declared");
+                      }}
+
+                         
+                      }
+                    };
                     | type ID ASSIGN primary_expression PLUS primary_expression{ printf("Declaration statement with assignment.\n");
                     char *identifier = $6;
 
@@ -247,7 +352,7 @@ var_declarations : var_declaration { printf("Declaration statement.\n"); }
 
                          
                       }
-                      };
+                    };
                     | type ID ASSIGN expression{ printf("Declaration statement with assignment.\n");
                     
                       };
