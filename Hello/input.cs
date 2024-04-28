@@ -7,8 +7,11 @@ class Program
     static void Main(string[] args)
     {
         int num1 = 10;
-        int mm=20;
-        int yy= num1;
+        int mm=2;
+        string mx = "msx";
+        int yy;
+        yy=num1 / mm;
+        int xx = num1 + mx;
         // int u = "c"; 
 
         // int c;
